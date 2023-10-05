@@ -8,34 +8,40 @@ const fs = require('fs');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-const client = new ImageAnnotatorClient();
+// Specify the path to your service account key JSON file
+const keyFilename = './project-rollings-4e8812ca234b.json';
 
-// Load the service account key from the environment variable
-const keyFilename = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+// Create a new ImageAnnotatorClient with the specified credentials
+const visionClient = new ImageAnnotatorClient({ keyFilename });
 
-// Specify the keyFilename when creating the client
-const clientWithCredentials = new ImageAnnotatorClient({ keyFilename });
 
 
 // Route to upload an image and perform recognition
 router.post('/upload', upload.single('image'), async (req, res) => {
   try {
+    
     if (!req.file) {
       return res.status(400).json({ message: 'No image file provided.' });
     }
 
     const imageBuffer = req.file.buffer;
 
-    // Create a new image annotation request
-    const [result] = await client.labelDetection(imageBuffer);
+     // Create a new image annotation request
+    const [result] = await visionClient.annotateImage({
+      image: { content: imageBuffer },
+      features: [{ type: 'LABEL_DETECTION' }],
+    });
 
-   // Get the image recognition results
-    const labels = result.labelAnnotations;    
+    // Get the image recognition results
+    const labels = result.labelAnnotations; 
 
     res.status(200).json({ labels });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Server error' });
+  } 
+  catch (error) {
+     console.error('Error:', error);
+
+    // Handle the error and provide an appropriate response
+    res.status(500).json({ error: 'Server error', details: error.message });
   }
 });
 
