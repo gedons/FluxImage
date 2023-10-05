@@ -41,12 +41,13 @@ router.post('/upload', upload.single('image'), async (req, res) => {
     // Get the image recognition results
     const labels = result.labelAnnotations; 
     const textAnnotations = result.textAnnotations;
-    
+    const faces = result.faceAnnotations;
 
     // Create a response object containing both label and text recognition results
     const response = {
       labels,
       textAnnotations,
+      faces
     };
 
      res.status(200).json(response);

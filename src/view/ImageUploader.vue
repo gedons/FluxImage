@@ -17,6 +17,23 @@
 		        <p>{{ analysisResult.textAnnotations[0].description }}</p>
 		      </div> -->
 
+		       <div v-if="analysisResult.faces && analysisResult.faces.length">
+		        <h3>Detected Faces:</h3>
+		        <ul>
+		          <li v-for="(face, index) in analysisResult.faces" :key="index">
+		            <!-- Display face details as needed -->
+		             	<p>Face {{ index + 1 }}</p>
+			            <p>Joy: {{ face.joyLikelihood === 'VERY_LIKELY' ? 'Yes' : 'No' }}</p>
+			            <p>Anger: {{ face.angerLikelihood === 'VERY_LIKELY' ? 'Yes' : 'No' }}</p>
+			            <p>Sorrow: {{ face.sorrowLikelihood === 'VERY_LIKELY' ? 'Yes' : 'No' }}</p>
+			            <p>Surprise: {{ face.surpriseLikelihood === 'VERY_LIKELY' ? 'Yes' : 'No' }}</p>
+			            <p>Under Exposed: {{ face.underExposedLikelihood === 'VERY_LIKELY' ? 'Yes' : 'No' }}</p>
+			            <p>Blurred: {{ face.blurredLikelihood === 'VERY_LIKELY' ? 'Yes' : 'No' }}</p>
+			            <p>Headwear: {{ face.headwearLikelihood === 'VERY_LIKELY' ? 'Yes' : 'No' }}</p>
+		          </li>
+		        </ul>
+		      </div>
+
 		    </div>
 	  </div>
    
