@@ -7,9 +7,16 @@
 		    <input type="file" @change="uploadImage" accept="image/*">
 		    <div v-if="analysisResult">
 		      <h3>Recognition Results:</h3>
-		      <ul>
-		        <li v-for="(label, index) in analysisResult" :key="index">{{ label.description }}</li>
-		      </ul>
+
+		      <!--  <ul v-if="analysisResult.labels && analysisResult.labels.length">
+		        <li v-for="(label, index) in analysisResult.labels" :key="index">{{ label.description }}</li>
+		      </ul> -->
+
+		       <!-- <div v-if="analysisResult.textAnnotations && analysisResult.textAnnotations.length">
+		        <h3>OCR Text:</h3>
+		        <p>{{ analysisResult.textAnnotations[0].description }}</p>
+		      </div> -->
+
 		    </div>
 	  </div>
    
@@ -38,7 +45,7 @@ export default {
         const response = await axios.post('http://localhost:3000/api/images/upload', formData);
 
         // Handle the response (e.g., update the UI with recognition results)
-        this.analysisResult = response.data.labels;
+        this.analysisResult = response.data;
       } catch (error) {
         console.error(error);        
       }

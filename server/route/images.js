@@ -29,13 +29,27 @@ router.post('/upload', upload.single('image'), async (req, res) => {
      // Create a new image annotation request
     const [result] = await visionClient.annotateImage({
       image: { content: imageBuffer },
-      features: [{ type: 'LABEL_DETECTION' }],
+      features: [
+      	{ type: 'LABEL_DETECTION' },
+	    { type: 'FACE_DETECTION' },
+	    { type: 'LOGO_DETECTION' },
+	    { type: 'LANDMARK_DETECTION' },
+	    { type: 'TEXT_DETECTION' }, 
+      ],
     });
 
     // Get the image recognition results
     const labels = result.labelAnnotations; 
+    const textAnnotations = result.textAnnotations;
+    
 
-    res.status(200).json({ labels });
+    // Create a response object containing both label and text recognition results
+    const response = {
+      labels,
+      textAnnotations,
+    };
+
+     res.status(200).json(response);
   } 
   catch (error) {
      console.error('Error:', error);
