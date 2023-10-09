@@ -10,15 +10,18 @@
   },
   "dependencies": {
     "@google-cloud/vision": "^4.0.2",
-    "axios": "^1.5.1",
-    "vue": "^3.2.47",
-    "vue-router": "^4.2.5",
     "@tailwindcss/forms": "^0.5.2",
+    "@teamhanko/hanko-elements": "^0.8.3",
+    "axios": "^1.5.1",
     "chart.js": "^3.8.0",
     "chartjs-adapter-moment": "^1.0.0",
     "flatpickr": "^4.6.13",
     "moment": "^2.29.4",
-    "vue-flatpickr-component": "^9.0.6"
+    "vue": "^3.2.47",
+    "vue-flatpickr-component": "^9.0.6",
+    "vue-router": "^4.2.5",
+    "vue-toast-notification": "^3.1.1",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",

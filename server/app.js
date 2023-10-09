@@ -1,19 +1,36 @@
 const express = require('express');
-const app = express();
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const userRoutes = require('./route/userRoute');
+const hankoAuthMiddleware = require('./middleware/hankoAuthMiddleware');
+
+const app = express();
+const corsOptions = {
+  origin: 'http://localhost:5173', 
+  credentials: true,
+};
+app.use(cors(corsOptions));
+const port = process.env.PORT || 3000;
+
+// Connect to MongoDB
+mongoose.connect('mongodb+srv://gedoni:blues0001153@cluster0.kiocya5.mongodb.net/users?retryWrites=true&w=majority', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((error) => console.error('MongoDB connection error:', error));
 
 // Middleware
-app.use(cors()); // Enable CORS for your Vue.js frontend
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(hankoAuthMiddleware()); 
 
 // Routes
-const imagesRoutes = require('./route/images');
-app.use('/api/images', imagesRoutes);
+app.use('/api/users', userRoutes);
 
 // Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });

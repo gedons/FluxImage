@@ -1,64 +1,21 @@
 <template>
-    <div class="bg-gray-200 min-h-screen flex items-center justify-center">
-    <div class="bg-white rounded-lg shadow-lg p-6 max-w-xl flex mt-4">
-      <div class="flex-shrink-0">
-        <img src="../assets/vue.svg" alt="App Logo" class="h-12 w-12">
-      </div>
-      <div class="ml-4">
-        <h1 class="text-2xl font-bold">Recognize</h1>
-        <p class="text-gray-600 mt-2">This is a simple Image Recognition Web Application that enables users to upload images, and then uses AI image recognition to identify objects, people, or scenes within the images. This is integrated with Google Cloud Vision API.
+  <section>
+    <div class="container flex flex-col justify-center p-6 mx-auto sm:py-12 lg:py-24 lg:flex-row lg:justify-between">
+      <div class="flex flex-col justify-center p-6 text-center rounded-sm lg:max-w-md xl:max-w-lg lg:text-left">
+        <h1 class="text-5xl font-bold leadi sm:text-6xl">Unlock The
+          <span class="text-violet-400">Power of</span> Image Recognition
+        </h1>
+        <p class="mt-6 mb-8 text-lg sm:mb-12">See the Unseen: Explore Images with 
+          <br class="hidden md:inline lg:hidden">the Magic of AI-Powered Vision
         </p>
-        <button class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"><router-link :to="{name: 'ImageUploader'}">Get Started</router-link></button>
+        <div class="flex flex-col space-y-4 sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
+          <router-link :to="{name: 'Authenticate'}" class="px-8 py-3 text-lg font-semibold rounded bg-violet-600 text-gray-200">Get Started</router-link>
+          <!-- <a rel="noopener noreferrer" href="#" class="px-8 py-3 text-lg font-semibold border rounded border-gray-400 hover:text-violet-600">Malesuada</a> -->
+        </div>
+      </div>
+      <div class="flex items-center justify-center p-6 lg:mr-12 mt-8 lg:mt-0 h-72 sm:h-80 lg:h-96 xl:h-112 2xl:h-128">
+        <img src="../assets/Business_SVG.svg" alt="" class="object-contain h-72 sm:h-80 lg:h-96 xl:h-112 2xl:h-128">
       </div>
     </div>
-  </div>
+  </section>
 </template>
-<script>
-export default {
-  name: 'Index'
- }
-</script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.card {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 24px;
-  max-width: 400px;
-}
-
-.card img {
-  height: 48px;
-  width: 48px;
-}
-
-.card h1 {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 8px;
-}
-
-.card p {
-  color: #666;
-  margin-top: 8px;
-}
-
-.card button {
-  background-color: #4299e1;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 8px 16px;
-  margin-top: 16px;
-  font-weight: bold;
-}
-</style>
