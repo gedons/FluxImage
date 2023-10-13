@@ -1,20 +1,20 @@
 // middleware/authMiddleware.js
 
 const jwt = require('jsonwebtoken');
+const config = require('../config/config');
 
 module.exports = (req, res, next) => {
-  const token = req.headers.authorization;
+  const token = req.header('x-auth-token');
 
   if (!token) {
-    return res.status(401).json({ message: 'Authorization token is missing' });
+    return res.status(401).json({ message: 'Authorization denied' });
   }
 
   try {
-    const decodedToken = jwt.verify(token, '1234567890qwertyuiopasdfghjklzxcvbnmey');
-    req.userData = { userId: decodedToken.userId };
+    const decoded = jwt.verify(token,  config.jwtSecret);
+    req.user = decoded;
     next();
-  } catch (error) {
-    console.error(error);
-    res.status(401).json({ message: 'Invalid token' });
+  } catch (err) {
+    res.status(401).json({ message: `Token is not valid: ${err.message}` });
   }
 };

@@ -7,26 +7,22 @@
 	<div class="bg-white w-full md:max-w-md lg:max-w-full md:mx-auto md:mx-0 md:w-1/2 xl:w-1/3 h-screen px-6 lg:px-16 xl:px-12
 		flex items-center justify-center">
 		<div class="w-full h-100">
-			<h1 class="text-xl md:text-2xl font-bold leading-tight mt-12">Create an account</h1>
-			<form class="mt-6" @submit.prevent="registerUser">
-				<div>
-					<label class="block text-gray-700">Name</label>
-					<input type="text" name="" id="name" v-model="username" placeholder="Enter User Name" class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-violet-500 focus:bg-white focus:outline-none" autofocus autocomplete required>
-				</div>
+			<h1 class="text-xl md:text-2xl font-bold leading-tight mt-12">Login account</h1>
+			<form class="mt-6" @submit.prevent="loginUser">							
 				<div>
 					<label class="block text-gray-700">Email Address</label>
-					<input type="email" name="" id="email" v-model="email" placeholder="Enter Email Address" class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-violet-500 focus:bg-white focus:outline-none" autofocus autocomplete required>
+					<input type="email" id="email" v-model="email" placeholder="Enter Email Address" class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-violet-500 focus:bg-white focus:outline-none" autofocus autocomplete required>
 				</div>
 				<div class="mt-4">
 					<label class="block text-gray-700">Password</label>
-					<input type="password" name="" id="password" v-model="password" placeholder="Enter Password" minlength="6" class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-violet-500
+					<input type="password" id="password" v-model="password" placeholder="Enter Password" minlength="6" class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-violet-500
 					focus:bg-white focus:outline-none" required>
 				</div>
 				<div class="text-right mt-2">
 					<a href="#" class="text-sm font-semibold text-gray-700 hover:text-violet-700 focus:text-violet-700">Forgot Password?</a>
 				</div>
 				<button type="submit" class="w-full block bg-violet-500 hover:bg-violet-400 focus:bg-violet-400 text-white font-semibold rounded-lg
-				px-4 py-3 mt-6">Register</button>
+				px-4 py-3 mt-6">Login</button>
 			</form>
 			<hr class="my-6 border-gray-300 w-full">
 			<button type="button" class="w-full block bg-white hover:bg-gray-100 focus:bg-gray-100 text-gray-900 font-semibold rounded-lg px-4 py-3 border border-gray-300">
@@ -37,50 +33,38 @@
 				</span>
 			</div>
 			</button>
-			<p class="mt-8">Already have an account? <router-link :to="{name: 'Authenticate'}" class="text-violet-500 hover:text-violet-700 font-semibold">Log in</router-link></p>
+			<p class="mt-8">Don't have an account? <router-link :to="{name: 'Register'}" class="text-violet-500 hover:text-violet-700 font-semibold">Register</router-link></p>
 		</div>
 	</div>
 </section>
 </template>
 
 <script>
-import axios from '../../axios'; 
+import axios from '../axios'; 
 
 export default {
   data() {
-    return {
-      username: '',
+    return {    
       email: '',
       password: '',
     };
   },
-  methods: {
-    async registerUser() {
-      try {
-        const response = await axios.post('/api/users/register', {
-          username: this.username,
-          email: this.email,
-          password: this.password,
-        });
-        if (response.status === 201) {
-        	  this.$toast.success('Registration successful. You can now log in.', {
-	            timeout: 3000, 
-	          });
-	          this.$router.push("/Authenticate");
-        }
-      }catch (error) {        
-        console.error(error);
-        if (error.response.status === 400) {          
-          this.$toast.error('Email is already taken.', {
-            timeout: 3000, 
-          });
-        } else {          
-           this.$toast.error('An error occurred. Please try again later.', {
-            timeout: 3000, 
-          });
-        }
-      }
-    },
-  },
-};
+	methods: {
+	    loginUser() {
+	      this.$store.dispatch('login', { email: this.email, password: this.password })
+	        .then((success) => {
+	          if (success) {
+	          	this.$toast.success('Login successful.', {
+		            timeout: 3000, 
+		          });
+	            this.$router.push('/dashboard');
+	          } else {
+	             this.$toast.error('User details does not exist. Confirm and try again!', {
+		            timeout: 9000, 
+		          });
+	          }
+	        });
+	    },
+	  },
+	};
 </script>

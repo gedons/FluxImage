@@ -1,90 +1,99 @@
-// controllers/userController.js
-
 const User = require('../models/User');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt'); 
 
-// Register a new user
-exports.register = async (req, res) => {
-  try {
-    const { username, email, password } = req.body;
-    // Check if the email is already taken
-    const existingUser = await User.findOne({ email });
+// Get user details
+exports.getUserProfile = async (req, res) => {
+  
+  const { email, username } = req.body;
+  try {      
 
-    if (existingUser) {
-      return res.status(400).json({ message: 'Email is already taken' });
-    }
-
-    // Hash the password
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-    // Create a new user
-    const newUser = new User({
-      username,
-      email,
-      password: hashedPassword,
-    });
-
-    await newUser.save();
-
-    res.status(201).json({ message: 'User Created successfully' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-};
-
-// Log in a user
-exports.login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    // Find the user by email
     const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ message: 'No user found' });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: `Error retriving user profile:  ${error.message}` });
+  }
+};
+
+// Update user profile
+exports.updateUserProfile = async (req, res) => {
+  try {
+    const { id, email, username } = req.body;
+    
+    // Find the user by id
+    const user = await User.findOne({ id });
 
     if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(404).json({ message: 'User not found' });
     }
 
-    // Compare the provided password with the stored hash
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    // Update email and username
+    user.email = email;
+    user.username = username;
 
-    if (!passwordMatch) {
-      return res.status(401).json({ message: 'Invalid credentials' });
-    }
+    // Save the updated user
+    await user.save();
 
-   // Generate a JWT token
-    const token = jwt.sign({ userId: user._id }, '1234567890qwertyuiopasdfghjklzxcvbnmey', {
-      expiresIn: '1h', 
-    });
-
-    res.status(200).json({ message: 'Login successful', token, user });
+    // Return the updated user data
+    res.status(200).json(user);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
+     res.status(500).json({ message: `Error updating user profile:  ${error.message}` });
+  }
+};
+
+//Update user password
+exports.updateUserPassword = async (req, res) => {
+  try {
+    const { id, currentPassword, newPassword } = req.body;
+    // Find the user by id
+    const user = await User.findOne({ id });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    try{     
+      const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+    }catch(error){
+       return res.status(401).json({ message: `Current password is incorrect: ${error.message}` });
+    }
+   
+    // if (!isPasswordValid) {
+    //   return res.status(401).json({ message: `Current password is incorrect: ${error.message}` });
+    // }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update the user's password with the hashed new password
+    user.password = hashedPassword;
+
+    // Save the updated user with the new password
+    await user.save();
+
+    // Return a success message
+    res.status(200).json({ message: 'Password updated successfully',  user: user });
+  } catch (error) {
+    // Handle any errors
+    console.error('Error updating user password:', error);
+    res.status(500).json({ message: `Internal server error: ${error.message}` });
   }
 };
 
 
-// Log out a user by revoking the token
-exports.logout = async (req, res) => {
-  try {    
-    const { token } = req.body;
+// Delete user account
+exports.deleteUserAccount = async (req, res) => {
+  try {
+    // Retrieve user details based on the authenticated user (e.g., from req.user)
+    const user = req.user;
 
-    const user = await User.findByIdAndUpdate(
-      req.user._id,
-      { $push: { revokedTokens: token } },
-      { new: true }
-    );
-
-    if (!user) {
-      return res.status(401).json({ message: 'User not found' });
-    }
-
-    res.status(200).json({ message: 'Logout successful' });
+    // Delete the user's account
+    await user.remove();
+    res.status(200).json({ message: 'User account deleted' });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: 'Error deleting user account' });
   }
 };

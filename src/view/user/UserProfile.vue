@@ -1,5 +1,5 @@
 <template>
-  <Disclosure as="nav" class="bg-gray-800" v-slot="{ open }">
+    <Disclosure as="nav" class="bg-gray-800" v-slot="{ open }">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
           <div class="flex items-center">
@@ -97,109 +97,60 @@
     <header class="bg-white shadow">
         <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           <div class="flex justify-between items-center">
-            <h1 class="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
-            <div v-if="currentUser">
-              <p class="font-semibold">Welcome</p>
-              <!-- Add other dashboard content and features here -->
-            </div>
-          <div v-else>
-            <p>Please log in to access the dashboard.</p>
-          </div>
+            <h1 class="text-3xl font-bold tracking-tight text-gray-900">Your Profile</h1>           
           </div>
         </div>
-      </header>
-      <main class="bg-violet-100">
-        <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">           
-            <div  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 text-gray-900">
-                <!-- total task count -->
-                <div class="order-1 lg:order-1 bg-white shadow-md p-3 text-center flex flex-col animate-fade-in-down" style="animation-delay: 0.2s">
-                  <h2 class="text-2xl mb-3 text-center font-semibold">Total Tasks</h2>
-                  <div
-                    class="text-8xl pb-4 font-semibold text-violet-600 flex-1 flex items-center justify-center"
-                  >
-                    4
-                  </div>
-                </div>
-                <!-- /total task count  -->
+    </header>
 
-                <!-- completed task count -->
-                <div class="order-2 lg:order-2 bg-white shadow-md p-3 text-center flex flex-col animate-fade-in-down" style="animation-delay: 0.2s">
-                  <h2 class="text-2xl mb-3 text-center font-semibold">Completed Tasks</h2>
-                  <div
-                    class="text-8xl pb-4 font-semibold text-violet-600 flex-1 flex items-center justify-center"
-                  >
-                   5
-                  </div>
-                </div>
-                <!-- /completed task count  -->
-
-                 <!-- imcompleted task count -->
-                 <div class="order-3 lg:order-3 bg-white shadow-md p-3 text-center flex flex-col animate-fade-in-down" style="animation-delay: 0.2s">
-                  <h2 class="text-2xl mb-3 text-center font-semibold">Incomplete Tasks</h2>
-                  <div
-                    class="text-8xl pb-4 font-semibold text-violet-600 flex-1 flex items-center justify-center"
-                  >
-                 6
-                  </div>
-                </div>
-                <!-- /imcompleted task count  -->
-
-                  <!-- overdue task count -->
-                  <div class="order-4 lg:order-4 bg-white shadow-md p-3 text-center flex flex-col animate-fade-in-down" style="animation-delay: 0.2s">
-                    <h2 class="text-2xl mb-3 text-center font-semibold">Overdue Tasks</h2>
-                    <div
-                      class="text-8xl pb-4 font-semibold text-violet-600 flex-1 flex items-center justify-center"
-                    >
-                   3
-                    </div>
-                  </div>
-                  <!-- /overdue task count  -->
-
-                  <!-- lates task -->               
-                  <div class="order-5 lg:order-5 row-span-2 bg-white shadow-md p-3 text-center flex flex-col animate-fade-in-down" style="animation-delay: 0.2s">
-                  <h2 class="text-2xl mb-3 text-center font-semibold">Your Latest Task</h2>
-                  <div>                    
-                    <h3 class="font-bold text-xl mb-3">New Title</h3>
-                    <div class="flex justify-between text-sm mb-1">
-                      <div class="font-semibold">Created Date:</div>
-                      <div class="font-semibold">today</div>
-                    </div>
-    
-                    <div class="flex justify-between text-sm mb-1">
-                      <div class="font-semibold">Status:</div>
-                      <div>                       
-                        <p class="text-green-700 font-semibold">Finished</p>
-                      </div>
-                     <!--  <div v-else>                   
-                        <p class="text-red-700 font-semibold">Pending</p>
-                      </div> -->
-                    </div>
-
-                    <div class="flex justify-between text-sm mb-1">
-                      <div class="font-semibold">Priority:</div>
-                     
-                    </div>
-
-                    <div class="flex justify-between text-sm mb-1">
-                      <div class="font-semibold">Due Date:</div>
-                      <div class="font-semibold">Tommorrow</div>
-                    </div>
-                    
-                    <div class="flex justify-between">                                  
-                        New Image
-                    </div>
-                  </div>
-                  <div class="text-violet-600 text-center py-16">
-                    Your don't have any task yet
-                  </div>
-                  </div>
-                  <!-- /latest task -->
-
-                 
+    <main class="bg-violet-100">
+        <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8 ">
+          <div class="bg-white shadow-md p-3 animate-fade-in-down">
+            <div class="px-4 sm:px-0">
+                <h3 class="text-base font-semibold leading-7 text-gray-900">User Information</h3>   
+                <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Personal details and image api requests.</p>
             </div>
-          </div> 
-        
-      </main>
+            <div class="mt-6 border-t border-gray-100" v-if="isAuthenticated">
+              <dl class="divide-y divide-gray-100">
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <dt class="text-sm font-medium leading-6 text-gray-900">Full name</dt>
+                  <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ currentUser.user.username }}</dd>
+                </div>
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <dt class="text-sm font-medium leading-6 text-gray-900">Email address</dt>
+                  <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ currentUser.user.email }}</dd>
+                </div>               
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <dt class="text-sm font-medium leading-6 text-gray-900">Image api requests</dt>
+                  <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">30</dd>
+                </div>
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <dt class="text-sm font-medium leading-6 text-gray-900">About</dt>
+                  <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu.</dd>
+                </div>
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <dt class="text-sm font-medium leading-6 text-gray-900">Action</dt>
+                  <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                    <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200">
+                      <li class="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+                        <div class="flex w-0 flex-1 items-center">
+                          <PaperClipIcon class="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+                          <div class="ml-4 flex min-w-0 flex-1 gap-2">
+                            <span class="truncate font-medium">account setting</span>                            
+                          </div>
+                        </div>
+                        <div class="ml-4 flex-shrink-0">
+                          <router-link :to="{name: 'UserSettings'}" class="font-medium text-indigo-600 hover:text-indigo-500">Settings</router-link>
+                        </div>
+                      </li>                    
+                    </ul>
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+    </main>
+
 </template>
 
 
@@ -210,6 +161,7 @@ import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 import { useStore } from "vuex";
 import { computed } from "vue";
 import { useRouter } from "vue-router";
+import { PaperClipIcon } from '@heroicons/vue/20/solid'
 
 
 const details = {
@@ -241,22 +193,8 @@ export default {
     BellIcon,
     XMarkIcon,
     Bars3Icon,
+    PaperClipIcon
   },
-
-   data() {
-    return {
-      username: '', 
-    };
-  },
-
-   beforeRouteEnter(to, from, next) {
-    next(vm => {
-      if (vm.currentUser) {
-        vm.username = vm.currentUser.user.username;         
-      }
-    });
-  },
-
   setup() {
     const store = useStore();
     const router = useRouter();

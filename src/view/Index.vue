@@ -9,7 +9,7 @@
           <br class="hidden md:inline lg:hidden">the Magic of AI-Powered Vision
         </p>
         <div class="flex flex-col space-y-4 sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
-          <router-link :to="{name: 'Authenticate'}" class="px-8 py-3 text-lg font-semibold rounded bg-violet-600 text-gray-200">Get Started</router-link>
+          <router-link :to="{name: 'Register'}" class="px-8 py-3 text-lg font-semibold rounded bg-violet-600 text-gray-200">Get Started</router-link>
           <!-- <a rel="noopener noreferrer" href="#" class="px-8 py-3 text-lg font-semibold border rounded border-gray-400 hover:text-violet-600">Malesuada</a> -->
         </div>
       </div>

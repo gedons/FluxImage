@@ -28,7 +28,7 @@ const router = useRouter();
 
 const redirectAfterLogin = () => {
   // successfully logged in, redirect to a page in your application
-  router.push({ name: "Dashboard" });
+  router.push({ name: "Onboarding04" });
 };
 
 onMounted(() => {

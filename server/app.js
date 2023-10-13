@@ -3,8 +3,12 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const userRoutes = require('./route/userRoute');
-const hankoAuthMiddleware = require('./middleware/hankoAuthMiddleware');
+const authRoutes = require('./route/authRoutes');
+const userRoutes = require('./route/userRoutes');
+const config = require('./config/config');
+const authMiddleware = require('./middleware/authMiddleware');
+//const userRoutes = require('./route/userRoute');
+// const hankoAuthMiddleware = require('./middleware/hankoAuthMiddleware');
 
 const app = express();
 const corsOptions = {
@@ -15,7 +19,7 @@ app.use(cors(corsOptions));
 const port = process.env.PORT || 3000;
 
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://gedoni:blues0001153@cluster0.kiocya5.mongodb.net/users?retryWrites=true&w=majority', {
+mongoose.connect(config.mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
@@ -24,11 +28,12 @@ mongoose.connect('mongodb+srv://gedoni:blues0001153@cluster0.kiocya5.mongodb.net
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cookieParser());
-app.use(hankoAuthMiddleware()); 
+// app.use(cookieParser());
+// app.use(hankoAuthMiddleware()); 
 
 // Routes
-app.use('/api/users', userRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/auth', authRoutes);
 
 // Start the server
 app.listen(port, () => {

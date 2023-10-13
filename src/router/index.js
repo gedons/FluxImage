@@ -1,11 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Index from '../view/Index.vue'
-import Authenticate from '../view/user/Authenticate.vue'
-import Register from '../view/user/Register.vue'
+import Login from '../view/Login.vue'
+import Register from '../view/Register.vue'
 import Dashboard from '../view/user/Dashboard.vue'
+import Welcome from '../view/user/Welcome.vue'
+import UserProfile from '../view/user/UserProfile.vue'
+import UserSettings from '../view/user/UserSettings.vue'
 import store from '../store';
 // import ImageUploader from '../view/ImageUploader.vue'
 // import Dashboard from '../view/Dashboard.vue';
+
 
 const routes = [
 		{
@@ -14,19 +18,38 @@ const routes = [
 			component: Index
 		},
 		{
-			path: '/Authenticate',
-			name: 'Authenticate',
-			component: Authenticate
+			path: '/login',
+			name: 'Login',
+			component: Login
 		},	
 		{
-			path: '/Register',
+			path: '/register',
 			name: 'Register',
 			component: Register,			
 		},	
 		{
-		    path: '/Dashboard',
+		    path: '/welcome',
+		    name: 'Welcome',
+		    component: Welcome,
+		    meta: { requiresAuth: true },		    
+		},	
+		{
+		    path: '/dashboard',
 		    name: 'Dashboard',
-		    component: Dashboard,		    
+		    component: Dashboard,
+		    meta: { requiresAuth: true },		    
+		},	
+		{
+		  path: '/dashboard/profile',
+		  name: 'UserProfile',
+		  component: UserProfile,
+		  meta: { requiresAuth: true },
+		},			
+		{
+		  path: '/dashboard/settings',
+		  name: 'UserSettings',
+		  component: UserSettings,
+		  meta: { requiresAuth: true },
 		},
 	]
 
@@ -38,16 +61,18 @@ const router = createRouter({
 	routes
 })
 
+
 router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {    
-    const isAuthenticated = store.getters.isAuthenticated; 
-    if (!isAuthenticated) {      
-      next('/Login');
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    const isAuthenticated = store.getters.isAuthenticated;
+
+    if (!isAuthenticated) {
+      next({ name: 'Login' });
     } else {
-      next(); 
+      next();
     }
   } else {
-    next(); 
+    next();
   }
 });
 
