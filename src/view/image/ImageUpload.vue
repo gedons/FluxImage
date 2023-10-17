@@ -97,105 +97,38 @@
     <header class="bg-white shadow">
         <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           <div class="flex justify-between items-center">
-            <h1 class="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
-            <div v-if="currentUser">
-              <p class="font-semibold">Welcome</p>
-              <!-- Add other dashboard content and features here -->
-            </div>
-          <div v-else>
-            <p>Please log in to access the dashboard.</p>
-          </div>
+            <h1 class="text-3xl font-bold tracking-tight text-gray-900">Upload Image</h1>
+            <div>
+              <router-link :to="{name: 'Index'}" class="flex py-2 px-4 border border-transparent text-sm rounded-md text-white bg-violet-800 hover:bg-violet-700 focus:ring-2 font-semibold focus:ring-offset-2 focus:ring-indigo-500">
+                 Back
+              </router-link>
+            </div>          
           </div>
         </div>
       </header>
-      <main class="bg-violet-100">
+      <main class="bg-gray-50">
         <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">           
-            <div  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 text-gray-900">
-                <!-- total task count -->
-                <div class="order-1 lg:order-1 bg-white shadow-md p-3 text-center flex flex-col animate-fade-in-down" style="animation-delay: 0.2s">
-                  <h2 class="text-2xl mb-3 text-center font-semibold">Total Tasks</h2>
-                  <div
-                    class="text-8xl pb-4 font-semibold text-violet-600 flex-1 flex items-center justify-center"
-                  >
-                    4
-                  </div>
+            <div class="bg-white flex justify-center items-center shadow-md p-3 animate-fade-in-down">
+              
+                <div @dragover.prevent @drop="handleDrop" class="file_upload p-5 relative border-4 border-dotted border-gray-300 rounded-lg" 
+                  style="width: 450px">
+                        <div v-if="imagePreview">
+                            <h3 class="font-semibold text-2xl ">Preview</h3>
+                                <img :src="imagePreview" alt="Image Preview" style="max-width: 100%; height: 170px;">                                                                   
+                          </div>
+                          <svg v-else class="text-violet-500 w-24 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                          <div class="input_field flex flex-col w-max mx-auto text-center">
+                              <label>
+                                  <input type="hidden" v-model="user_id">
+                                  <input type="file" class="text-sm cursor-pointer w-36 hidden" name="image" ref="fileInput" @change="previewImage" @click="checkFileSize" accept="image/*">
+
+                                  <button v-if="imagePreview" @click="uploadImage" class="text bg-violet-800 text-white border border-violet-300 rounded font-semibold cursor-pointer mt-3 p-1 px-7 hover:bg-violet-700">Save</button>
+                                  <div v-else class="text bg-violet-800 text-white border border-violet-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-violet-700">Select Image</div>
+                              </label>
+                              <div class=" mt-2 title text-violet-500 uppercase font-semibold">or drop image here</div><span>(max size: 2MB)</span>
+                          </div>
                 </div>
-                <!-- /total task count  -->
-
-                <!-- completed task count -->
-                <div class="order-2 lg:order-2 bg-white shadow-md p-3 text-center flex flex-col animate-fade-in-down" style="animation-delay: 0.2s">
-                  <h2 class="text-2xl mb-3 text-center font-semibold">Completed Tasks</h2>
-                  <div
-                    class="text-8xl pb-4 font-semibold text-violet-600 flex-1 flex items-center justify-center"
-                  >
-                   5
-                  </div>
-                </div>
-                <!-- /completed task count  -->
-
-                 <!-- imcompleted task count -->
-                 <div class="order-3 lg:order-3 bg-white shadow-md p-3 text-center flex flex-col animate-fade-in-down" style="animation-delay: 0.2s">
-                  <h2 class="text-2xl mb-3 text-center font-semibold">Incomplete Tasks</h2>
-                  <div
-                    class="text-8xl pb-4 font-semibold text-violet-600 flex-1 flex items-center justify-center"
-                  >
-                 6
-                  </div>
-                </div>
-                <!-- /imcompleted task count  -->
-
-                  <!-- overdue task count -->
-                  <div class="order-4 lg:order-4 bg-white shadow-md p-3 text-center flex flex-col animate-fade-in-down" style="animation-delay: 0.2s">
-                    <h2 class="text-2xl mb-3 text-center font-semibold">Overdue Tasks</h2>
-                    <div
-                      class="text-8xl pb-4 font-semibold text-violet-600 flex-1 flex items-center justify-center"
-                    >
-                   3
-                    </div>
-                  </div>
-                  <!-- /overdue task count  -->
-
-                  <!-- lates task -->               
-                  <div class="order-5 lg:order-5 row-span-2 bg-white shadow-md p-3 text-center flex flex-col animate-fade-in-down" style="animation-delay: 0.2s">
-                  <h2 class="text-2xl mb-3 text-center font-semibold">Your Latest Task</h2>
-                  <div>                    
-                    <h3 class="font-bold text-xl mb-3">New Title</h3>
-                    <div class="flex justify-between text-sm mb-1">
-                      <div class="font-semibold">Created Date:</div>
-                      <div class="font-semibold">today</div>
-                    </div>
-    
-                    <div class="flex justify-between text-sm mb-1">
-                      <div class="font-semibold">Status:</div>
-                      <div>                       
-                        <p class="text-green-700 font-semibold">Finished</p>
-                      </div>
-                     <!--  <div v-else>                   
-                        <p class="text-red-700 font-semibold">Pending</p>
-                      </div> -->
-                    </div>
-
-                    <div class="flex justify-between text-sm mb-1">
-                      <div class="font-semibold">Priority:</div>
-                     
-                    </div>
-
-                    <div class="flex justify-between text-sm mb-1">
-                      <div class="font-semibold">Due Date:</div>
-                      <div class="font-semibold">Tommorrow</div>
-                    </div>
-                    
-                    <div class="flex justify-between">                                  
-                        New Image
-                    </div>
-                  </div>
-                  <div class="text-violet-600 text-center py-16">
-                    Your don't have any task yet
-                  </div>
-                  </div>
-                  <!-- /latest task -->
-
-                 
+                            
             </div>
           </div> 
         
@@ -205,16 +138,15 @@
 
 <script>
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
- import { PencilIcon, PlusIcon } from '@heroicons/vue/24/outline';
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline';
+import { PencilIcon, PlusIcon } from '@heroicons/vue/24/outline';
+import { Bars3Icon, BellIcon, XMarkIcon, LinkIcon } from '@heroicons/vue/24/outline';
 import { useStore } from "vuex";
+import axios from 'axios';
 import { computed } from "vue";
 import { useRouter } from "vue-router";
 
 
 const details = {
-  // name: 'Tom Cook',
-  // email: 'tom@example.com',
   imageUrl:
     '/user.svg',
 }
@@ -241,21 +173,88 @@ export default {
     MenuItems,
     BellIcon,
     XMarkIcon,
+    LinkIcon,
     Bars3Icon,
   },
 
    data() {
     return {
-      username: '', 
+      imagePreview: '',
+      user_id: '',
     };
   },
 
    beforeRouteEnter(to, from, next) {
     next(vm => {
       if (vm.currentUser) {
-        vm.username = vm.currentUser.user.username;         
+        vm.user_id = vm.currentUser.user._id;          
       }
     });
+  },
+
+   methods: {
+
+    // Function to preview the selected image
+    previewImage() {
+      const fileInput = this.$refs.fileInput;
+      const file = fileInput.files[0];
+      this.imagePreview = URL.createObjectURL(file);      
+    },  
+
+    // Function to upload the image
+    async uploadImage() {
+      if (!this.imagePreview) {
+        this.$toast.error('Please select an image first');
+        return;
+      }
+
+      try {
+        const formData = new FormData();
+        formData.append('image', this.$refs.fileInput.files[0]);       
+        formData.append('user_id', this.user_id);
+
+        // Make an API request to upload the image
+        const response = await axios.post('http://localhost:3000/api/image/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data', 
+          },
+        });
+
+        if (response.status === 200) {
+          this.$toast.success('Image uploaded successfully');
+          // Clear form fields 
+          this.imagePreview = '';
+          this.$router.push('/dashboard/recognition');
+        }
+      } catch (error) {
+        this.$toast.error('Image upload failed. Please try again.');
+        console.error('Image upload error:', error);
+      }
+    }, 
+
+     // Function to handle dropping an image onto the drop area
+    handleDrop(event) {
+      event.preventDefault();
+
+      const file = event.dataTransfer.files[0];
+
+      if (file && file.type.startsWith('image/')) {
+        this.imagePreview = URL.createObjectURL(file);
+         
+      }
+    },
+
+    //Function to check file size
+    checkFileSize(event) {
+      const fileInput = this.$refs.fileInput;
+      const file = fileInput.files[0];
+      const maxSize = 2 * 1024 * 1024; // 2MB (in bytes)
+
+      if (file && file.size > maxSize) {
+        event.preventDefault();
+        this.$toast.error('File size exceeds the maximum limit (2MB).');
+      }
+    },
   },
 
   setup() {

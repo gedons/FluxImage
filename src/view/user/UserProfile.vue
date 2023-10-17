@@ -172,7 +172,8 @@ const details = {
 }
 const navigation = [
   { name: 'Dashboard', to: { name: 'Dashboard' } },
-  { name: 'Recognition', to: { name: 'Index' } },
+  { name: 'Recognition', to: { name: 'Recognition' } },
+  { name: 'Upload Image', to: { name: 'ImageUpload' } },
 ];
 
 const userNavigation = [

@@ -4,13 +4,10 @@ const imageSchema = new mongoose.Schema({
   user_id: {
     type: String,
     required: true,
-  },
-  description: {
-    type: String,
-  },
+  }, 
   imageUrl: {
     type: String,
-    required: true, cd server
+    required: true, 
   },
   uploadDate: {
     type: Date,

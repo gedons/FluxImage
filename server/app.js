@@ -5,6 +5,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const authRoutes = require('./route/authRoutes');
 const userRoutes = require('./route/userRoutes');
+const imageRoutes = require('./route/imageRoutes');
 const config = require('./config/config');
 const authMiddleware = require('./middleware/authMiddleware');
 //const userRoutes = require('./route/userRoute');
@@ -33,6 +34,7 @@ app.use(bodyParser.json());
 
 // Routes
 app.use('/api/user', userRoutes);
+app.use('/api/image', imageRoutes);
 app.use('/api/auth', authRoutes);
 
 // Start the server
