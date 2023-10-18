@@ -6,7 +6,7 @@ import Dashboard from '../view/user/Dashboard.vue'
 import Welcome from '../view/user/Welcome.vue'
 import UserProfile from '../view/user/UserProfile.vue'
 import UserSettings from '../view/user/UserSettings.vue'
-import Recognition from '../view/user/Recognition.vue'
+import Images from '../view/user/Images.vue'
 import ImageUpload from '../view/image/ImageUpload.vue'
 import store from '../store';
 // import ImageUploader from '../view/ImageUploader.vue'
@@ -54,9 +54,9 @@ const routes = [
 		  meta: { requiresAuth: true },
 		},
 		{
-		  path: '/dashboard/recognition',
-		  name: 'Recognition',
-		  component: Recognition,
+		  path: '/dashboard/images',
+		  name: 'Images',
+		  component: Images,
 		  meta: { requiresAuth: true },
 		},
 		{

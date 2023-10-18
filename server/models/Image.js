@@ -13,6 +13,9 @@ const imageSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  analysisResults: {
+    type: Object,
+  },
 });
 
 const Image = mongoose.model('Image', imageSchema);

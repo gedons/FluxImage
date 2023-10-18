@@ -85,7 +85,7 @@ const store = createStore({
       }
     },
 
-    async updateUserProfile({ commit }, { username, email }) {
+    async updateUserProfile({ commit }, { username, id }) {
       try {
         // Make an API request to update the user's profile
         const response = await fetch('http://localhost:3000/api/user/profile', {
@@ -93,7 +93,7 @@ const store = createStore({
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ username, email }),
+          body: JSON.stringify({ username, id }),
         });
 
         if (response.ok) {

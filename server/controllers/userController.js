@@ -21,17 +21,22 @@ exports.getUserProfile = async (req, res) => {
 // Update user profile
 exports.updateUserProfile = async (req, res) => {
   try {
-    const { id, email, username } = req.body;
+    const { id, username } = req.body;
+
+    // Check if the request contains a valid user ID
+    if (!id) {
+      return res.status(400).json({ message: 'Invalid user ID in the request' });
+    }    
     
     // Find the user by id
-    const user = await User.findOne({ id });
+    const user = await User.findById(id);
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
     // Update email and username
-    user.email = email;
+    //user.email = email;
     user.username = username;
 
     // Save the updated user

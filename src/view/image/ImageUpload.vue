@@ -112,18 +112,36 @@
               
                 <div @dragover.prevent @drop="handleDrop" class="file_upload p-5 relative border-4 border-dotted border-gray-300 rounded-lg" 
                   style="width: 450px">
-                        <div v-if="imagePreview">
-                            <h3 class="font-semibold text-2xl ">Preview</h3>
+                        <div v-if="imagePreview" class="flex justify-center items-center">
+                            
                                 <img :src="imagePreview" alt="Image Preview" style="max-width: 100%; height: 170px;">                                                                   
-                          </div>
+                        </div>
                           <svg v-else class="text-violet-500 w-24 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
                           <div class="input_field flex flex-col w-max mx-auto text-center">
                               <label>
+
                                   <input type="hidden" v-model="user_id">
                                   <input type="file" class="text-sm cursor-pointer w-36 hidden" name="image" ref="fileInput" @change="previewImage" @click="checkFileSize" accept="image/*">
 
-                                  <button v-if="imagePreview" @click="uploadImage" class="text bg-violet-800 text-white border border-violet-300 rounded font-semibold cursor-pointer mt-3 p-1 px-7 hover:bg-violet-700">Save</button>
-                                  <div v-else class="text bg-violet-800 text-white border border-violet-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-violet-700">Select Image</div>
+                                  <div v-if="imagePreview" class="flex justify-center items-center">
+                                    <button  @click="uploadImage" class="text bg-violet-800 text-white border border-violet-300 rounded font-semibold cursor-pointer mt-3 p-1 px-7 hover:bg-violet-700 flex justify-center items-center"
+                                        :class="{
+                                           'cursor-not-allowed': loading,                                      
+                                         }">  
+                                        <svg v-if="loading" class="animate-spin mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor"
+                                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                            </path>
+                                       </svg>
+                                      Save
+                                    </button>
+                                  </div>
+                                  <div v-else class="text bg-violet-800 text-white border border-violet-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-violet-700">
+                                    Select Image
+                                  </div>
+
                               </label>
                               <div class=" mt-2 title text-violet-500 uppercase font-semibold">or drop image here</div><span>(max size: 2MB)</span>
                           </div>
@@ -152,7 +170,7 @@ const details = {
 }
 const navigation = [
   { name: 'Dashboard', to: { name: 'Dashboard' } },
-  { name: 'Recognition', to: { name: 'Recognition' } },
+  { name: 'Images', to: { name: 'Images' } },
   { name: 'Upload Image', to: { name: 'ImageUpload' } },
 ];
 
@@ -181,6 +199,7 @@ export default {
     return {
       imagePreview: '',
       user_id: '',
+      loading: false,
     };
   },
 
@@ -203,6 +222,7 @@ export default {
 
     // Function to upload the image
     async uploadImage() {
+      this.loading = true;
       if (!this.imagePreview) {
         this.$toast.error('Please select an image first');
         return;
@@ -221,14 +241,17 @@ export default {
         });
 
         if (response.status === 200) {
-          this.$toast.success('Image uploaded successfully');
+          this.$toast.success('Analysis performed successfully');
           // Clear form fields 
           this.imagePreview = '';
-          this.$router.push('/dashboard/recognition');
+          this.loading = false;
+          this.$router.push('/dashboard/images');
         }
       } catch (error) {
         this.$toast.error('Image upload failed. Please try again.');
+        this.loading = false;
         console.error('Image upload error:', error);
+
       }
     }, 
 

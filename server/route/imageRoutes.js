@@ -2,24 +2,29 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const imageController = require('../controllers/imageController');
+const { ImageAnnotatorClient } = require('@google-cloud/vision');
 const Image = require('../models/Image');
 
-// Upload image
-//router.post('/upload', imageController.uploadImage);
 
+const keyFilename = './project-rollings-235933cf7cf2.json';
 
+// Create a new ImageAnnotatorClient with the specified credentials
+const visionClient = new ImageAnnotatorClient({ keyFilename });
+
+// Initialize google storage
 const { Storage } = require('@google-cloud/storage');
 const storage = new Storage({
   projectId: 'project-rollings',
   keyFilename: './project-rollings-235933cf7cf2.json',
 });
 
+//My bucket name
 const bucketName = 'portfolio-nerdy'; 
   
 // Multer middleware for handling file uploads
 const upload = multer({ storage: multer.memoryStorage() });
 
-// API route for image upload
+// API route for image upload, save and analysze image
 router.post('/upload', upload.single('image'), async (req, res) => {
   try {
     const bucket = storage.bucket(bucketName);   
@@ -42,10 +47,37 @@ router.post('/upload', upload.single('image'), async (req, res) => {
         imageUrl,
       });
  
+      //save user id and image url to database
       await image.save();
 
-      return res.status(200).json({ message: 'Image uploaded and saved successfully' });
-    });
+      // Perform image analysis with Google Cloud Vision      
+      const [result] = await visionClient.annotateImage({
+        image: { source: { imageUri: imageUrl } },
+        features: [
+          { type: 'LABEL_DETECTION' },
+          { type: 'FACE_DETECTION' },
+          { type: 'LOGO_DETECTION' },
+          { type: 'LANDMARK_DETECTION' },
+          { type: 'TEXT_DETECTION' },
+        ],
+      });
+
+      // Process the analysis results as needed
+      const labels = result.labelAnnotations;
+      const faces = result.faceAnnotations;
+      const logos = result.logoAnnotations;
+      const landmarks = result.landmarkAnnotations;
+      const texts = result.textAnnotations;
+
+      return res.status(200).json({
+        message: 'Image uploaded, saved, and analyzed successfully',
+        labels,
+        faces,
+        logos,
+        landmarks,
+        texts,
+      });
+    });      
 
     blobStream.end(req.file.buffer);
   } catch (error) {
@@ -117,5 +149,45 @@ router.delete('/delete/:image_id', async (req, res) => {
   }
 });
 
+//Api route to analyse image
+// router.post('/analyze', async (req, res) => {
+//   try {    
+
+//     const imageUrl = req.body.imageUrl;  
+//     console.log(imageUrl);  
+    
+//     // Create a request to analyze the image for label detection
+//      // Create a new image annotation request
+//     const [result] = await visionClient.annotateImage({
+//       image: { content: imageUrl },
+//       features: [
+//         { type: 'LABEL_DETECTION' },
+//         { type: 'FACE_DETECTION' },
+//         { type: 'LOGO_DETECTION'} ,        
+//         { type: 'TEXT_DETECTION' }, 
+//       ],
+//     });
+
+//     // Get the image recognition results
+//     const labels = result.labelAnnotations; 
+//     const textAnnotations = result.textAnnotations;
+//     const faces = result.faceAnnotations;
+
+//    // Create a response object containing both label and text recognition results
+//     const response = {
+//       labels,
+//       textAnnotations,
+//       faces
+//     };
+
+//     // Send the response back to the client
+//     res.status(200).json(response);
+
+//   } catch (error) {
+//     console.error(error);
+//     // Handle the error and provide an appropriate response
+//     res.status(500).json({ error: 'Server error', details: error.message });
+//   }
+// });
 
 module.exports = router;

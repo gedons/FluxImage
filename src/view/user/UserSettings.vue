@@ -120,7 +120,7 @@
                     <input
                       type="text"
                       name="username"
-                      id="username"
+                      id="username"                      
                       v-model="username"
                       autocomplete="username"
                       class="mt-1 focus:ring-violet-600 focus:border-gray-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -137,8 +137,9 @@
                       id="email"
                       v-model="email"
                       autocomplete="email"
-                      class="mt-1 focus:ring-violet-600 focus:border-gray-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      class="mt-1 focus:ring-violet-600 focus:border-gray-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md cursor-not-allowed"
                       placeholder="Email"
+                      disabled
                     />
                   </dd>
                 </div>                                             
@@ -250,7 +251,7 @@ const details = {
 
 const navigation = [
   { name: 'Dashboard', to: { name: 'Dashboard' } },
-  { name: 'Recognition', to: { name: 'Recognition' } },
+  { name: 'Images', to: { name: 'Images' } },
   { name: 'Upload Image', to: { name: 'ImageUpload' } },
 ];
 
@@ -329,8 +330,9 @@ export default {
       // Call the store action to update the user's profile
       this.$store
         .dispatch('updateUserProfile', {
+          id: this.id,
           username: this.username,
-          email: this.email,
+          // email: this.email,
         })
         .then((success) => {
           if (success) {

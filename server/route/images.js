@@ -31,10 +31,10 @@ router.post('/upload', upload.single('image'), async (req, res) => {
       image: { content: imageBuffer },
       features: [
       	{ type: 'LABEL_DETECTION' },
-	    { type: 'FACE_DETECTION' },
-	    { type: 'LOGO_DETECTION' },
-	    { type: 'LANDMARK_DETECTION' },
-	    { type: 'TEXT_DETECTION' }, 
+  	    { type: 'FACE_DETECTION' },
+        { type: 'LOGO_DETECTION'} ,
+  	    { type: 'LANDMARK_DETECTION' },
+  	    { type: 'TEXT_DETECTION' }, 
       ],
     });
 

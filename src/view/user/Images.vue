@@ -99,7 +99,7 @@
           <div class="flex justify-between items-center">
             <h1 class="text-3xl font-bold tracking-tight text-gray-900">Images</h1>
             <div>
-              <span class="font-semibold">Total Images: {{ imageCount }}</span>
+              <span v-if="!loading" class="font-semibold">Total Images: {{ imageCount }}</span>
             </div>          
           </div>
         </div>
@@ -122,14 +122,24 @@
                 <div v-else class="grid grid-cols-1 gap-5 rounded sm:grid-cols-2 md:grid-cols-3">
                     <div v-for="image in images" :key="image._id" class="flex flex-col py-4 px-6 shadow-md bg-white hover:bg-gray-50 h[470px] opacity-0 animate-fade-in-down">
                       <img :src="image.imageUrl" alt="img" class="w-full h-48 object-cover"/>
+                      
+                      <label class="font-semibold text-sm mt-2">Analysis Feature:</label>
+                      <!-- //drop down -->                       
+                      <select v-model="selectedFeature" class="mt-3 form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none font-semibold">        
+                      <option value="label">Label Detection</option>
+                      <option value="face">Face Detection</option>
+                      <option value="logo">Logo Detection</option>                     
+                      <option value="text">Text Detection</option>
+                    </select>
+
                       <input type="hidden" v-model="user_id">
                       <div class="flex justify-between items-center mt-3">                         
-                        <router-link :to="{name: 'ImageUpload'}" class="flex py-2 px-4 border border-transparent text-sm rounded-md text-white bg-violet-800 hover:bg-violet-700 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">                         
+                        <button  @click="analyzeLabel(image.imageUrl)" class="flex py-2 px-4 border border-transparent text-sm rounded-md text-white bg-violet-800 hover:bg-violet-700 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">                         
                           Analyze
-                        </router-link>
+                        </button> 
                         <div class="flex items-center">
                            <span class="text-sm font-semibold">{{ formatDate(image.uploadDate)}}</span>
-                          <button @click="deleteImage(image._id)"  type="button" class="h-8 w-8 flex items-center justify-center rounded-full border border-transparent text-sm text-red-500 focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                          <button @click="openModal"  type="button" class="h-8 w-8 flex items-center justify-center rounded-full border border-transparent text-sm text-red-500 focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 -mt-1 inline-block">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                             </svg>
@@ -137,10 +147,44 @@
                           </button>
                         </div>
                       </div>
+
+                       <TransitionRoot as="template" :show="showModal">
+                          <Dialog as="div" class="relative z-10" @close="showModal = false">
+                            <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
+                              <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                            </TransitionChild>
+
+                            <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+                              <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                                <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200" leave-from="opacity-100 translate-y-0 sm:scale-100" leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+                                 <DialogPanel class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                                  <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                    <div class="sm:flex sm:items-start">
+                                      <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                        <ExclamationTriangleIcon class="h-6 w-6 text-red-600" aria-hidden="true" />
+                                      </div>
+                                      <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                        <DialogTitle as="h3" class="text-base font-semibold leading-6 text-gray-900">Delete Image</DialogTitle>
+                                        <div class="mt-2">
+                                          <p class="text-sm text-gray-500">Are you sure you want to delete this image? This action cannot be undone.</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                                    <button type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto" @click="deleteImage(image._id)">Delete</button>
+                                    <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto" @click="open = false" ref="cancelButtonRef">Cancel</button>
+                                  </div>
+                                </DialogPanel>
+                                </TransitionChild>
+                              </div>
+                            </div>
+                          </Dialog>
+                        </TransitionRoot>
                     </div>                
                 </div>
 
-	                <div  v-if="images.length !== 0" class="flex justify-center mt-5"> 
+	                <div v-if="images.length !== 0" class="flex justify-center mt-5"> 
 		                  <nav
 		                  class="relative z-0 inline-flex justify-center bg-slate-100 rounded-md shadow-md -space-x-px"
 		                  aria-label="Pagination">
@@ -164,14 +208,15 @@
 
 
 <script>
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
- import { PencilIcon, PlusIcon } from '@heroicons/vue/24/outline';
-import { Bars3Icon, BellIcon, XMarkIcon, LinkIcon } from '@heroicons/vue/24/outline';
-import { useStore } from "vuex";
-import axios from 'axios';
-import moment from 'moment';
-import { computed } from "vue";
-import { useRouter } from "vue-router";
+  import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems, Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue';
+  import { PencilIcon, PlusIcon, ExclamationTriangleIcon } from '@heroicons/vue/24/outline';
+  import { Bars3Icon, BellIcon, XMarkIcon, LinkIcon } from '@heroicons/vue/24/outline';
+  import { ChevronDownIcon } from '@heroicons/vue/20/solid'
+  import { useStore } from "vuex";
+  import axios from 'axios';
+  import moment from 'moment';
+  import { computed, ref } from "vue";
+  import { useRouter } from "vue-router";
 
 
 const details = {
@@ -180,7 +225,7 @@ const details = {
 }
 const navigation = [
   { name: 'Dashboard', to: { name: 'Dashboard' } },
-  { name: 'Recognition', to: { name: 'Recognition' } },
+  { name: 'Images', to: { name: 'Images' } },
   { name: 'Upload Image', to: { name: 'ImageUpload' } },
 ];
 
@@ -203,6 +248,8 @@ export default {
     XMarkIcon,
     LinkIcon,
     Bars3Icon,
+    Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot,
+    ExclamationTriangleIcon, ChevronDownIcon
   },
 
   data() {
@@ -213,6 +260,13 @@ export default {
        loading: true,
        page: 1,
        pageSize: 6,
+       showModal: false,
+
+       //analysis feature
+       selectedFeature: 'label',
+       analysisResult: null,
+       // imageUrl: ''
+
 
     };
   },
@@ -231,17 +285,17 @@ export default {
     },
 
     deleteImage(image_id) {
-      if (confirm('Are you sure you want to delete this image?')) {
+     // if (confirm('Are you sure you want to delete this image?')) {
         axios.delete(`http://localhost:3000/api/image/delete/${image_id}`)
           .then(() => {
-            this.images = this.images.filter(image => image._id !== image_id);
+            // this.images = this.images.filter(image => image._id !== image_id);
             this.$toast.success('Image deleted successfully');
           })
           .catch((error) => {
             console.error('Error deleting image:', error);
             this.$toast.error('Error deleting image');
           });
-      }
+    //  }
     },
 
     previousPage() {
@@ -287,6 +341,55 @@ export default {
         });
     },
 
+    analyzeImage() {
+      // Implement image analysis logic based on the selected feature
+      if (this.selectedFeature === 'label') {
+        this.analyzeLabel();
+      } else if (this.selectedFeature === 'face') {
+        this.analyzeFace();
+      } else if (this.selectedFeature === 'logo') {
+        this.analyzeLogo();
+      } else if (this.selectedFeature === 'text') {
+        this.analyzeText();
+      }
+    },
+
+    async analyzeLabel(imageUrl) {  
+
+     try {
+
+        const response = await axios.post('http://localhost:3000/api/image/analyze', { imageUrl })       
+        this.analysisResult = response.data; 
+
+      } catch (error) {
+        console.error(error);        
+      }finally {       
+        // this.loading = false;
+      }    
+     
+    },
+    analyzeFace() {
+      // Implement face detection logic here
+    },
+    analyzeLogo() {
+      // Implement logo detection logic here
+    },   
+    analyzeText() {
+      // Implement text detection logic here
+    },
+
+    openModal() {
+      // Set showModal to true to display the modal
+      this.showModal = true;
+      // ... other logic
+    },
+
+    closeModal() {
+      // Set showModal to false to hide the modal
+      this.showModal = false;
+      // ... other logic
+    },
+
   },
 
   created() {
@@ -297,6 +400,7 @@ export default {
   setup() {
     const store = useStore();
     const router = useRouter();
+    
 
     function logout() {
       store.dispatch("logout").then(() => {

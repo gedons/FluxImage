@@ -220,7 +220,7 @@ const details = {
 }
 const navigation = [
   { name: 'Dashboard', to: { name: 'Dashboard' } },
-  { name: 'Recognition', to: { name: 'Recognition' } },
+  { name: 'Images', to: { name: 'Images' } },
   { name: 'Upload Image', to: { name: 'ImageUpload' } },
 ];
 
