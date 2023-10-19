@@ -69,6 +69,18 @@ router.post('/upload', upload.single('image'), async (req, res) => {
       const landmarks = result.landmarkAnnotations;
       const texts = result.textAnnotations;
 
+      // After receiving and processing analysis results
+      image.analysisResults = {
+        labels,
+        faces,
+        logos,
+        landmarks,
+        texts,
+      };
+
+       // Save the updated image with analysis results
+      await image.save();
+
       return res.status(200).json({
         message: 'Image uploaded, saved, and analyzed successfully',
         labels,
@@ -149,45 +161,33 @@ router.delete('/delete/:image_id', async (req, res) => {
   }
 });
 
-//Api route to analyse image
-// router.post('/analyze', async (req, res) => {
-//   try {    
 
-//     const imageUrl = req.body.imageUrl;  
-//     console.log(imageUrl);  
-    
-//     // Create a request to analyze the image for label detection
-//      // Create a new image annotation request
-//     const [result] = await visionClient.annotateImage({
-//       image: { content: imageUrl },
-//       features: [
-//         { type: 'LABEL_DETECTION' },
-//         { type: 'FACE_DETECTION' },
-//         { type: 'LOGO_DETECTION'} ,        
-//         { type: 'TEXT_DETECTION' }, 
-//       ],
-//     });
+// Define a route to fetch analysis results
+router.get('/analysis/:imageId', async (req, res) => {
+  try {
+    const imageId = req.params.imageId;
 
-//     // Get the image recognition results
-//     const labels = result.labelAnnotations; 
-//     const textAnnotations = result.textAnnotations;
-//     const faces = result.faceAnnotations;
+    // Fetch the image with the specified imageId
+    const image = await Image.findById(imageId);
+    console.log(image);
 
-//    // Create a response object containing both label and text recognition results
-//     const response = {
-//       labels,
-//       textAnnotations,
-//       faces
-//     };
+    if (!image) {
+      return res.status(404).json({ message: 'Image not found' });
+    }
 
-//     // Send the response back to the client
-//     res.status(200).json(response);
+    // Check if the image has analysis results
+    if (!image.analysisResults) {
+      return res.status(404).json({ message: 'Analysis results not available for this image' });
+    }
 
-//   } catch (error) {
-//     console.error(error);
-//     // Handle the error and provide an appropriate response
-//     res.status(500).json({ error: 'Server error', details: error.message });
-//   }
-// });
+    // Extract the analysis results from the image and respond with them
+    const analysisResults = image.analysisResults;
+    res.status(200).json(analysisResults);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error fetching analysis results', error: error.message });
+  }
+});
+
 
 module.exports = router;

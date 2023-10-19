@@ -104,6 +104,7 @@
           </div>
         </div>
     </header>
+
       <main class="bg-gray-50">
         <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">   
               <div v-if="loading"  class="flex justify-center">
@@ -120,23 +121,15 @@
                 </div>
 
                 <div v-else class="grid grid-cols-1 gap-5 rounded sm:grid-cols-2 md:grid-cols-3">
-                    <div v-for="image in images" :key="image._id" class="flex flex-col py-4 px-6 shadow-md bg-white hover:bg-gray-50 h[470px] opacity-0 animate-fade-in-down">
+                  <div v-for="image in images" :key="image._id" class="flex flex-col py-4 px-6 shadow-md bg-white hover:bg-gray-50 h[470px] opacity-0 animate-fade-in-down">
                       <img :src="image.imageUrl" alt="img" class="w-full h-48 object-cover"/>
                       
-                      <label class="font-semibold text-sm mt-2">Analysis Feature:</label>
-                      <!-- //drop down -->                       
-                      <select v-model="selectedFeature" class="mt-3 form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none font-semibold">        
-                      <option value="label">Label Detection</option>
-                      <option value="face">Face Detection</option>
-                      <option value="logo">Logo Detection</option>                     
-                      <option value="text">Text Detection</option>
-                    </select>
-
+                      <label class="font-semibold text-sm mt-2">Analysis Features</label>                     
                       <input type="hidden" v-model="user_id">
                       <div class="flex justify-between items-center mt-3">                         
-                        <button  @click="analyzeLabel(image.imageUrl)" class="flex py-2 px-4 border border-transparent text-sm rounded-md text-white bg-violet-800 hover:bg-violet-700 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">                         
-                          Analyze
-                        </button> 
+                        <router-link :to="{ name: 'AnalysisResults', params: { imageId: image._id } }" class="flex py-2 px-4 border border-transparent text-sm rounded-md text-white bg-violet-800 hover:bg-violet-700 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">                         
+                          Result
+                        </router-link> 
                         <div class="flex items-center">
                            <span class="text-sm font-semibold">{{ formatDate(image.uploadDate)}}</span>
                           <button @click="openModal"  type="button" class="h-8 w-8 flex items-center justify-center rounded-full border border-transparent text-sm text-red-500 focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
@@ -148,7 +141,8 @@
                         </div>
                       </div>
 
-                       <TransitionRoot as="template" :show="showModal">
+                      <!-- Delete modal -->
+                      <TransitionRoot as="template" :show="showModal">
                           <Dialog as="div" class="relative z-10" @close="showModal = false">
                             <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="ease-in duration-200" leave-from="opacity-100" leave-to="opacity-0">
                               <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
@@ -180,7 +174,8 @@
                               </div>
                             </div>
                           </Dialog>
-                        </TransitionRoot>
+                      </TransitionRoot>                       
+
                     </div>                
                 </div>
 
@@ -209,7 +204,7 @@
 
 <script>
   import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems, Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue';
-  import { PencilIcon, PlusIcon, ExclamationTriangleIcon } from '@heroicons/vue/24/outline';
+  import { PencilIcon, PlusIcon, ExclamationTriangleIcon, InformationCircleIcon  } from '@heroicons/vue/24/outline';
   import { Bars3Icon, BellIcon, XMarkIcon, LinkIcon } from '@heroicons/vue/24/outline';
   import { ChevronDownIcon } from '@heroicons/vue/20/solid'
   import { useStore } from "vuex";
@@ -249,7 +244,7 @@ export default {
     LinkIcon,
     Bars3Icon,
     Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot,
-    ExclamationTriangleIcon, ChevronDownIcon
+    ExclamationTriangleIcon, ChevronDownIcon, InformationCircleIcon 
   },
 
   data() {
@@ -261,14 +256,7 @@ export default {
        page: 1,
        pageSize: 6,
        showModal: false,
-
-       //analysis feature
-       selectedFeature: 'label',
-       analysisResult: null,
-       // imageUrl: ''
-
-
-    };
+     };
   },
 
   beforeRouteEnter(to, from, next) {
@@ -288,7 +276,7 @@ export default {
      // if (confirm('Are you sure you want to delete this image?')) {
         axios.delete(`http://localhost:3000/api/image/delete/${image_id}`)
           .then(() => {
-            // this.images = this.images.filter(image => image._id !== image_id);
+            this.images = this.images.filter(image => image._id !== image_id);
             this.$toast.success('Image deleted successfully');
           })
           .catch((error) => {
@@ -341,53 +329,13 @@ export default {
         });
     },
 
-    analyzeImage() {
-      // Implement image analysis logic based on the selected feature
-      if (this.selectedFeature === 'label') {
-        this.analyzeLabel();
-      } else if (this.selectedFeature === 'face') {
-        this.analyzeFace();
-      } else if (this.selectedFeature === 'logo') {
-        this.analyzeLogo();
-      } else if (this.selectedFeature === 'text') {
-        this.analyzeText();
-      }
-    },
 
-    async analyzeLabel(imageUrl) {  
+    openModal() {      
+      this.showModal = true;      
+    },    
 
-     try {
-
-        const response = await axios.post('http://localhost:3000/api/image/analyze', { imageUrl })       
-        this.analysisResult = response.data; 
-
-      } catch (error) {
-        console.error(error);        
-      }finally {       
-        // this.loading = false;
-      }    
-     
-    },
-    analyzeFace() {
-      // Implement face detection logic here
-    },
-    analyzeLogo() {
-      // Implement logo detection logic here
-    },   
-    analyzeText() {
-      // Implement text detection logic here
-    },
-
-    openModal() {
-      // Set showModal to true to display the modal
-      this.showModal = true;
-      // ... other logic
-    },
-
-    closeModal() {
-      // Set showModal to false to hide the modal
-      this.showModal = false;
-      // ... other logic
+    closeModal() {      
+      this.showModal = false;      
     },
 
   },

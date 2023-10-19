@@ -8,6 +8,7 @@ import UserProfile from '../view/user/UserProfile.vue'
 import UserSettings from '../view/user/UserSettings.vue'
 import Images from '../view/user/Images.vue'
 import ImageUpload from '../view/image/ImageUpload.vue'
+import AnalysisResults from '../view/image/AnalysisResults.vue';
 import store from '../store';
 // import ImageUploader from '../view/ImageUploader.vue'
 // import Dashboard from '../view/Dashboard.vue';
@@ -63,6 +64,12 @@ const routes = [
 		  path: '/dashboard/ImageUpload',
 		  name: 'ImageUpload',
 		  component: ImageUpload,
+		  meta: { requiresAuth: true },
+		},
+		{
+		  path: '/analysisResult/:imageId',
+		  name: 'AnalysisResults',
+		  component: AnalysisResults,
 		  meta: { requiresAuth: true },
 		},
 	]
