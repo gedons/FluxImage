@@ -169,7 +169,7 @@ router.get('/analysis/:imageId', async (req, res) => {
 
     // Fetch the image with the specified imageId
     const image = await Image.findById(imageId);
-    console.log(image);
+
 
     if (!image) {
       return res.status(404).json({ message: 'Image not found' });
@@ -182,7 +182,15 @@ router.get('/analysis/:imageId', async (req, res) => {
 
     // Extract the analysis results from the image and respond with them
     const analysisResults = image.analysisResults;
-    res.status(200).json(analysisResults);
+    
+    // Include the image URL in the response
+    const response = {
+      imageUrl: image.imageUrl,
+      analysisResults,
+    };
+
+
+    res.status(200).json(response);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error fetching analysis results', error: error.message });

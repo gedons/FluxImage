@@ -98,13 +98,10 @@
         <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           <div class="flex justify-between items-center">
             <h1 class="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
-            <div v-if="currentUser">
+            <div>
               <p class="font-semibold">Welcome</p>
               <!-- Add other dashboard content and features here -->
-            </div>
-          <div v-else>
-            <p>Please log in to access the dashboard.</p>
-          </div>
+            </div>          
           </div>
         </div>
       </header>
@@ -113,7 +110,7 @@
             <div  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 text-gray-900">
                 <!-- total task count -->
                 <div class="order-1 lg:order-1 bg-white shadow-md p-3 text-center flex flex-col animate-fade-in-down" style="animation-delay: 0.2s">
-                  <h2 class="text-2xl mb-3 text-center font-semibold">Total Tasks</h2>
+                  <h2 class="text-2xl mb-3 text-center font-semibold">Total Images</h2>
                   <div
                     class="text-8xl pb-4 font-semibold text-violet-600 flex-1 flex items-center justify-center"
                   >
@@ -124,7 +121,7 @@
 
                 <!-- completed task count -->
                 <div class="order-2 lg:order-2 bg-white shadow-md p-3 text-center flex flex-col animate-fade-in-down" style="animation-delay: 0.2s">
-                  <h2 class="text-2xl mb-3 text-center font-semibold">Completed Tasks</h2>
+                  <h2 class="text-2xl mb-3 text-center font-semibold">Analysis Performed</h2>
                   <div
                     class="text-8xl pb-4 font-semibold text-violet-600 flex-1 flex items-center justify-center"
                   >
@@ -135,7 +132,7 @@
 
                  <!-- imcompleted task count -->
                  <div class="order-3 lg:order-3 bg-white shadow-md p-3 text-center flex flex-col animate-fade-in-down" style="animation-delay: 0.2s">
-                  <h2 class="text-2xl mb-3 text-center font-semibold">Incomplete Tasks</h2>
+                  <h2 class="text-2xl mb-3 text-center font-semibold">Token Available</h2>
                   <div
                     class="text-8xl pb-4 font-semibold text-violet-600 flex-1 flex items-center justify-center"
                   >
@@ -146,7 +143,7 @@
 
                   <!-- overdue task count -->
                   <div class="order-4 lg:order-4 bg-white shadow-md p-3 text-center flex flex-col animate-fade-in-down" style="animation-delay: 0.2s">
-                    <h2 class="text-2xl mb-3 text-center font-semibold">Overdue Tasks</h2>
+                    <h2 class="text-2xl mb-3 text-center font-semibold">Token Used</h2>
                     <div
                       class="text-8xl pb-4 font-semibold text-violet-600 flex-1 flex items-center justify-center"
                     >
@@ -157,9 +154,8 @@
 
                   <!-- lates task -->               
                   <div class="order-5 lg:order-5 row-span-2 bg-white shadow-md p-3 text-center flex flex-col animate-fade-in-down" style="animation-delay: 0.2s">
-                  <h2 class="text-2xl mb-3 text-center font-semibold">Your Latest Task</h2>
-                  <div>                    
-                    <h3 class="font-bold text-xl mb-3">New Title</h3>
+                  <h2 class="text-2xl mb-3 text-center font-semibold">Your Latest Image</h2>
+                  <div>                                        
                     <div class="flex justify-between text-sm mb-1">
                       <div class="font-semibold">Created Date:</div>
                       <div class="font-semibold">today</div>
@@ -168,7 +164,7 @@
                     <div class="flex justify-between text-sm mb-1">
                       <div class="font-semibold">Status:</div>
                       <div>                       
-                        <p class="text-green-700 font-semibold">Finished</p>
+                        <p class="text-green-700 font-semibold">Analysed</p>
                       </div>
                      <!--  <div v-else>                   
                         <p class="text-red-700 font-semibold">Pending</p>
