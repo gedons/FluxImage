@@ -198,4 +198,20 @@ router.get('/analysis/:imageId', async (req, res) => {
 });
 
 
+// API route to fetch the latest uploaded image for the dashboard home
+router.get('/dashboard/latest/:user_id', async (req, res) => {
+  try {
+    const user_id = req.params.user_id;
+    const latestImage = await Image.findOne({user_id}).sort({ uploadDate: -1 });
+
+    if (!latestImage) {
+      return res.status(404).json({ message: 'No images found' });
+    }
+    res.status(200).json(latestImage);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error fetching the latest image', error: error.message });
+  }
+});
+
 module.exports = router;

@@ -108,24 +108,24 @@
       <main class="bg-violet-100">
         <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">           
             <div  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 text-gray-900">
-                <!-- total task count -->
+                <!-- total image count -->
                 <div class="order-1 lg:order-1 bg-white shadow-md p-3 text-center flex flex-col animate-fade-in-down" style="animation-delay: 0.2s">
                   <h2 class="text-2xl mb-3 text-center font-semibold">Total Images</h2>
                   <div
                     class="text-8xl pb-4 font-semibold text-violet-600 flex-1 flex items-center justify-center"
                   >
-                    4
+                    {{ imageCount }}
                   </div>
                 </div>
                 <!-- /total task count  -->
 
-                <!-- completed task count -->
+                <!-- analysis count -->
                 <div class="order-2 lg:order-2 bg-white shadow-md p-3 text-center flex flex-col animate-fade-in-down" style="animation-delay: 0.2s">
                   <h2 class="text-2xl mb-3 text-center font-semibold">Analysis Performed</h2>
                   <div
                     class="text-8xl pb-4 font-semibold text-violet-600 flex-1 flex items-center justify-center"
                   >
-                   5
+                   {{ imageCount }}
                   </div>
                 </div>
                 <!-- /completed task count  -->
@@ -150,15 +150,15 @@
                    3
                     </div>
                   </div>
-                  <!-- /overdue task count  -->
+                  <!-- //  -->                  
 
-                  <!-- lates task -->               
+                  <!-- latest image -->               
                   <div class="order-5 lg:order-5 row-span-2 bg-white shadow-md p-3 text-center flex flex-col animate-fade-in-down" style="animation-delay: 0.2s">
                   <h2 class="text-2xl mb-3 text-center font-semibold">Your Latest Image</h2>
-                  <div>                                        
+                  <div v-if="latestImage">                                        
                     <div class="flex justify-between text-sm mb-1">
                       <div class="font-semibold">Created Date:</div>
-                      <div class="font-semibold">today</div>
+                      <div class="font-semibold">{{ formatDate(latestImage.uploadDate)}}</div>
                     </div>
     
                     <div class="flex justify-between text-sm mb-1">
@@ -170,23 +170,16 @@
                         <p class="text-red-700 font-semibold">Pending</p>
                       </div> -->
                     </div>
-
-                    <div class="flex justify-between text-sm mb-1">
-                      <div class="font-semibold">Priority:</div>
-                     
+                
+                    <div class="flex justify-center text-sm mb-1">
+                      <img :src="latestImage.imageUrl" alt="Latest Image"/>
                     </div>
-
-                    <div class="flex justify-between text-sm mb-1">
-                      <div class="font-semibold">Due Date:</div>
-                      <div class="font-semibold">Tommorrow</div>
-                    </div>
-                    
-                    <div class="flex justify-between">                                  
-                        New Image
-                    </div>
+                                       
                   </div>
-                  <div class="text-violet-600 text-center py-16">
-                    Your don't have any task yet
+                  <div v-else class="text-violet-600 text-center py-10 font-semibold">
+                    Upload New Image
+                     <button class="mt-3 px-3 py-2 bg-violet-800 rounded-md text-sm text-white hover:bg-violet-700">     New Image
+                    </button>
                   </div>
                   </div>
                   <!-- /latest task -->
@@ -205,6 +198,8 @@ import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuIt
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 import { useStore } from "vuex";
 import { computed } from "vue";
+import axios from 'axios';
+import moment from 'moment';
 import { useRouter } from "vue-router";
 
 
@@ -243,15 +238,51 @@ export default {
    data() {
     return {
       username: '', 
+      imageCount: 0,
+      latestImage: null
     };
   },
 
-   beforeRouteEnter(to, from, next) {
+  beforeRouteEnter(to, from, next) {
     next(vm => {
       if (vm.currentUser) {
         vm.username = vm.currentUser.user.username;         
       }
     });
+  },
+
+  methods: {
+    fetchLatestImage() {      
+      const user_id = this.currentUser.user._id; 
+      axios.get(`http://localhost:3000/api/image/dashboard/latest/${user_id}`)
+        .then((response) => {
+          this.latestImage = response.data;
+        })
+        .catch((error) => {
+          console.error('Error getting lates image:', error);
+        });
+    },
+
+    fetchImageCount() {
+      const user_id = this.currentUser.user._id; 
+      axios.get(`http://localhost:3000/api/image/image-count/${user_id}`)
+        .then((response) => {
+          this.imageCount = response.data.count;
+        })
+        .catch((error) => {
+          console.error('Error getting image count:', error);
+        });
+    },
+
+    formatDate(date) {
+      return moment(date).fromNow();
+    },
+
+  },
+
+  created() {
+     this.fetchLatestImage();
+     this.fetchImageCount();
   },
 
   setup() {
@@ -273,6 +304,7 @@ export default {
       logout
     };
   },
+
   computed: {
     isAuthenticated() {
       return this.$store.getters.isAuthenticated;
