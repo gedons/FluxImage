@@ -13,6 +13,8 @@ dist-ssr
 *.local
 .env
 
+server/project-rollings-235933cf7cf2.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
