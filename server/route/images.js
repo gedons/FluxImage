@@ -3,13 +3,14 @@ const router = express.Router();
 const { ImageAnnotatorClient } = require('@google-cloud/vision');
 const multer = require('multer');
 const fs = require('fs');
+const config = require('../config/config');
 
 // Configure multer for handling image uploads
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // Specify the path to your service account key JSON file
-const keyFilename = './project-rollings-4e8812ca234b.json';
+const keyFilename = config.googleAppCredentials;
 
 // Create a new ImageAnnotatorClient with the specified credentials
 const visionClient = new ImageAnnotatorClient({ keyFilename });

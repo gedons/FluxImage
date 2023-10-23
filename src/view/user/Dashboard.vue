@@ -105,9 +105,15 @@
           </div>
         </div>
       </header>
-      <main class="bg-violet-100">
-        <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">           
-            <div  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 text-gray-900">
+      <main class="bg-violet-50">
+        <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+           <div v-if="loading"  class="flex justify-center">
+              <svg  class="animate-spin text-center  h-8 w-8 text-violet-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            </div>             
+            <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 text-gray-900">
                 <!-- total image count -->
                 <div class="order-1 lg:order-1 bg-white shadow-md p-3 text-center flex flex-col animate-fade-in-down" style="animation-delay: 0.2s">
                   <h2 class="text-2xl mb-3 text-center font-semibold">Total Images</h2>
@@ -128,20 +134,20 @@
                    {{ imageCount }}
                   </div>
                 </div>
-                <!-- /completed task count  -->
+                <!-- /analysis count  -->
 
-                 <!-- imcompleted task count -->
+                 <!-- token available -->
                  <div class="order-3 lg:order-3 bg-white shadow-md p-3 text-center flex flex-col animate-fade-in-down" style="animation-delay: 0.2s">
                   <h2 class="text-2xl mb-3 text-center font-semibold">Token Available</h2>
                   <div
                     class="text-8xl pb-4 font-semibold text-violet-600 flex-1 flex items-center justify-center"
                   >
-                 6
+                  6
                   </div>
                 </div>
-                <!-- /imcompleted task count  -->
+                <!-- /token available  -->
 
-                  <!-- overdue task count -->
+                  <!-- token -->
                   <div class="order-4 lg:order-4 bg-white shadow-md p-3 text-center flex flex-col animate-fade-in-down" style="animation-delay: 0.2s">
                     <h2 class="text-2xl mb-3 text-center font-semibold">Token Used</h2>
                     <div
@@ -154,35 +160,35 @@
 
                   <!-- latest image -->               
                   <div class="order-5 lg:order-5 row-span-2 bg-white shadow-md p-3 text-center flex flex-col animate-fade-in-down" style="animation-delay: 0.2s">
-                  <h2 class="text-2xl mb-3 text-center font-semibold">Your Latest Image</h2>
-                  <div v-if="latestImage">                                        
-                    <div class="flex justify-between text-sm mb-1">
-                      <div class="font-semibold">Created Date:</div>
-                      <div class="font-semibold">{{ formatDate(latestImage.uploadDate)}}</div>
-                    </div>
-    
-                    <div class="flex justify-between text-sm mb-1">
-                      <div class="font-semibold">Status:</div>
-                      <div>                       
-                        <p class="text-green-700 font-semibold">Analysed</p>
+                    <h2 class="text-2xl mb-3 text-center font-semibold">Your Latest Image</h2>
+                    <div v-if="latestImage">                                        
+                      <div class="flex justify-between text-sm mb-1">
+                        <div class="font-semibold">Created Date:</div>
+                        <div class="font-semibold">{{ formatDate(latestImage.uploadDate)}}</div>
                       </div>
-                     <!--  <div v-else>                   
-                        <p class="text-red-700 font-semibold">Pending</p>
-                      </div> -->
+      
+                      <div class="flex justify-between text-sm mb-1">
+                        <div class="font-semibold">Status:</div>
+                        <div>                       
+                          <p class="text-green-700 font-semibold">Analysed</p>
+                        </div>
+                       <!--  <div v-else>                   
+                          <p class="text-red-700 font-semibold">Pending</p>
+                        </div> -->
+                      </div>
+                  
+                      <div class="flex justify-center text-sm mb-1">
+                        <img :src="latestImage.imageUrl" alt="Latest Image"/>
+                      </div>
+                                         
                     </div>
-                
-                    <div class="flex justify-center text-sm mb-1">
-                      <img :src="latestImage.imageUrl" alt="Latest Image"/>
+                    <div v-else class="text-violet-600 text-center py-10 font-semibold">
+                      Upload New Image
+                       <button class="mt-3 px-3 py-2 bg-violet-800 rounded-md text-sm text-white hover:bg-violet-700">     New Image
+                      </button>
                     </div>
-                                       
                   </div>
-                  <div v-else class="text-violet-600 text-center py-10 font-semibold">
-                    Upload New Image
-                     <button class="mt-3 px-3 py-2 bg-violet-800 rounded-md text-sm text-white hover:bg-violet-700">     New Image
-                    </button>
-                  </div>
-                  </div>
-                  <!-- /latest task -->
+                  <!-- /latest image -->
 
                  
             </div>
@@ -239,7 +245,8 @@ export default {
     return {
       username: '', 
       imageCount: 0,
-      latestImage: null
+      latestImage: null,
+      loading: true,
     };
   },
 
@@ -252,25 +259,31 @@ export default {
   },
 
   methods: {
-    fetchLatestImage() {      
+    fetchLatestImage() {     
+    this.loading = true; 
       const user_id = this.currentUser.user._id; 
       axios.get(`http://localhost:3000/api/image/dashboard/latest/${user_id}`)
         .then((response) => {
           this.latestImage = response.data;
+          this.loading = false; 
         })
         .catch((error) => {
           console.error('Error getting lates image:', error);
+          this.loading = false; 
         });
     },
 
     fetchImageCount() {
+      this.loading = true;
       const user_id = this.currentUser.user._id; 
       axios.get(`http://localhost:3000/api/image/image-count/${user_id}`)
         .then((response) => {
           this.imageCount = response.data.count;
+          this.loading = false; 
         })
         .catch((error) => {
           console.error('Error getting image count:', error);
+          this.loading = false; 
         });
     },
 

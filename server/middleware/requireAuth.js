@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const config = require('./config/config');
 
 module.exports = async (req, res, next) => {
   const token = req.header('Authorization');
@@ -10,7 +11,7 @@ module.exports = async (req, res, next) => {
 
   try {
     // Verify the token and decode its payload
-    const decodedToken = jwt.verify(token, '1234567890qwertyuiopasdfghjklzxcvbnmey');
+    const decodedToken = jwt.verify(token, config.jwtSecret);
 
     // Check if the token has been revoked
     const user = await User.findById(decodedToken.userId);

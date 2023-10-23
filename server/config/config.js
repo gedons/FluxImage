@@ -1,4 +1,7 @@
+const env = require('dotenv').config();
+
 module.exports = {
-  jwtSecret: '1234567890qwertyuiopasdfghjklzxcvbnmeyw',
-  mongoURI: 'mongodb+srv://gedoni:blues0001153@cluster0.kiocya5.mongodb.net/users?retryWrites=true&w=majority',
+  jwtSecret: process.env.JWT_SECRET,
+  mongoURI: process.env.MONGO_URI,
+  googleAppCredentials: process.env.GOOGLE_APPLICATION_CREDENTIALS,
 };

@@ -107,237 +107,231 @@
 
       <main class="bg-gray-50">
         <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">   
-            <!--   <div v-if="loading"  class="flex justify-center">
-                      <svg  class="animate-spin text-center  h-8 w-8 text-violet-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-              </div>   -->     
-              <div>
+            <div v-if="loading" class="flex justify-center">
+                <svg  class="animate-spin text-center  h-8 w-8 text-violet-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            </div>
+             
 
-                <!-- <div class="bg-white flex justify-center items-center shadow-sm    animate-fade-in-down h-20">
-                    <p class="font-semibold">Analysis not performed on this image</p>                   
-                </div> -->
+				   <div v-else>
+					    <div v-if="analysisResults">				    
+					    	<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 w-full">
+								  <div  v-if="analysisResults.labels && analysisResults.labels.length" class="relative mx-auto w-full">
+									<a href="#" class="relative inline-block duration-300 ease-in-out transition-transform transform hover:-translate-y-2 w-full">
+									  <div class="shadow p-4 rounded-lg bg-white">
+										<div class="flex justify-center relative rounded-lg overflow-hidden h-52">
+										  <div class="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full">
+											<img :src="imageUrl" class="absolute inset-0 bg-black opacity-40"/>
+										  </div>
 
-				   <div>
-				    
-				    <div v-if="analysisResults">				    
-				    	<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 w-full">
-						  <div  v-if="analysisResults.labels && analysisResults.labels.length" class="relative mx-auto w-full">
-							<a href="#" class="relative inline-block duration-300 ease-in-out transition-transform transform hover:-translate-y-2 w-full">
-							  <div class="shadow p-4 rounded-lg bg-white">
-								<div class="flex justify-center relative rounded-lg overflow-hidden h-52">
-								  <div class="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full">
-									<img :src="imageUrl" class="absolute inset-0 bg-black opacity-40"/>
+										  <div class="absolute flex justify-center bottom-0 mb-3">
+											<div class="flex bg-white px-4 py-1 space-x-5 rounded-lg overflow-hidden shadow">
+											  <p class="flex items-center font-medium text-gray-800">
+												<svg class="w-5 h-5 fill-current mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M480,226.15V80a48,48,0,0,0-48-48H80A48,48,0,0,0,32,80V226.15C13.74,231,0,246.89,0,266.67V472a8,8,0,0,0,8,8H24a8,8,0,0,0,8-8V416H480v56a8,8,0,0,0,8,8h16a8,8,0,0,0,8-8V266.67C512,246.89,498.26,231,480,226.15ZM64,192a32,32,0,0,1,32-32H208a32,32,0,0,1,32,32v32H64Zm384,32H272V192a32,32,0,0,1,32-32H416a32,32,0,0,1,32,32ZM80,64H432a16,16,0,0,1,16,16v56.9a63.27,63.27,0,0,0-32-8.9H304a63.9,63.9,0,0,0-48,21.71A63.9,63.9,0,0,0,208,128H96a63.27,63.27,0,0,0-32,8.9V80A16,16,0,0,1,80,64ZM32,384V266.67A10.69,10.69,0,0,1,42.67,256H469.33A10.69,10.69,0,0,1,480,266.67V384Z"></path></svg>
+												image preview
+											  </p>
+											</div>
+										  </div>
+
+										  <span class="absolute top-0 left-0 inline-flex mt-3 ml-3 px-3 py-2 rounded-lg z-10 text-violet-900 text-sm font-medium  select-none">
+											Label Analysis
+										  </span>
+										</div>
+
+										<div class="mt-4">
+										  <h2 class="font-medium text-base md:text-lg text-gray-800 line-clamp-1" title="New York">
+											Score
+										  </h2>
+										  
+										  <div>
+											<div v-for="(label, index) in analysisResults.labels" :key="index">
+											      <div class="w-full">
+											        <p class="font-semibold text-xs mt-2">{{ label.description }}</p>
+											        <div class="shadow w-full bg-grey-light mt-2">
+											          <div
+											            :class="getProgressBarColor(label.score)"
+											            class="text-xs font-semibold py-0 leading-none text-center text-white"
+											            :style="`width: ${label.score * 100}%`"
+											          >
+											            {{ (label.score * 100).toFixed(0) }}%
+											          </div>
+											        </div>
+											      </div>
+											</div>
+										  </div>
+
+										</div>								 							
+									  </div>
+									</a>
 								  </div>
 
-								  <div class="absolute flex justify-center bottom-0 mb-3">
-									<div class="flex bg-white px-4 py-1 space-x-5 rounded-lg overflow-hidden shadow">
-									  <p class="flex items-center font-medium text-gray-800">
-										<svg class="w-5 h-5 fill-current mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M480,226.15V80a48,48,0,0,0-48-48H80A48,48,0,0,0,32,80V226.15C13.74,231,0,246.89,0,266.67V472a8,8,0,0,0,8,8H24a8,8,0,0,0,8-8V416H480v56a8,8,0,0,0,8,8h16a8,8,0,0,0,8-8V266.67C512,246.89,498.26,231,480,226.15ZM64,192a32,32,0,0,1,32-32H208a32,32,0,0,1,32,32v32H64Zm384,32H272V192a32,32,0,0,1,32-32H416a32,32,0,0,1,32,32ZM80,64H432a16,16,0,0,1,16,16v56.9a63.27,63.27,0,0,0-32-8.9H304a63.9,63.9,0,0,0-48,21.71A63.9,63.9,0,0,0,208,128H96a63.27,63.27,0,0,0-32,8.9V80A16,16,0,0,1,80,64ZM32,384V266.67A10.69,10.69,0,0,1,42.67,256H469.33A10.69,10.69,0,0,1,480,266.67V384Z"></path></svg>
-										image preview
-									  </p>
-									</div>
+								  <div  v-if="analysisResults.faces && analysisResults.faces.length" class="relative mx-auto w-full">
+									<a href="#" class="relative inline-block duration-300 ease-in-out transition-transform transform hover:-translate-y-2 w-full">
+									  <div class="shadow p-4 rounded-lg bg-white">
+										<div class="flex justify-center relative rounded-lg overflow-hidden h-52">
+										  <div class="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full">
+											<img :src="imageUrl" class="absolute inset-0 bg-black opacity-40"/>
+										  </div>
+
+										  <div class="absolute flex justify-center bottom-0 mb-3">
+											<div class="flex bg-white px-4 py-1 space-x-5 rounded-lg overflow-hidden shadow">
+											  <p class="flex items-center font-medium text-gray-800">
+												<svg class="w-5 h-5 fill-current mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M480,226.15V80a48,48,0,0,0-48-48H80A48,48,0,0,0,32,80V226.15C13.74,231,0,246.89,0,266.67V472a8,8,0,0,0,8,8H24a8,8,0,0,0,8-8V416H480v56a8,8,0,0,0,8,8h16a8,8,0,0,0,8-8V266.67C512,246.89,498.26,231,480,226.15ZM64,192a32,32,0,0,1,32-32H208a32,32,0,0,1,32,32v32H64Zm384,32H272V192a32,32,0,0,1,32-32H416a32,32,0,0,1,32,32ZM80,64H432a16,16,0,0,1,16,16v56.9a63.27,63.27,0,0,0-32-8.9H304a63.9,63.9,0,0,0-48,21.71A63.9,63.9,0,0,0,208,128H96a63.27,63.27,0,0,0-32,8.9V80A16,16,0,0,1,80,64ZM32,384V266.67A10.69,10.69,0,0,1,42.67,256H469.33A10.69,10.69,0,0,1,480,266.67V384Z"></path></svg>
+												image preview
+											  </p>
+
+											</div>
+										  </div>
+
+										  <span class="absolute top-0 left-0 inline-flex mt-3 ml-3 px-3 py-2 rounded-lg z-10 text-violet-900 text-sm font-medium  select-none">
+											Face Mood
+										  </span>
+										</div>
+
+										<div class="mt-4">								  
+										  <div>
+											<div class="font-semibold text-sm" v-for="(face, index) in analysisResults.faces" :key="index">
+										            <p class="py-2">Joy: {{ face.joyLikelihood === 'VERY_LIKELY' ? 'Yes' : 'No' }}</p>
+										            <p class="py-2">Anger: {{ face.angerLikelihood === 'VERY_LIKELY' ? 'Yes' : 'No' }}</p>
+										            <p class="py-2">Sorrow: {{ face.sorrowLikelihood === 'VERY_LIKELY' ? 'Yes' : 'No' }}</p>
+										            <p class="py-2">Surprise: {{ face.surpriseLikelihood === 'VERY_LIKELY' ? 'Yes' : 'No' }}</p>
+										             <p class="py-2">Under Exposed: {{ face.underExposedLikelihood === 'VERY_LIKELY' ? 'Yes' : 'No' }}</p>
+										            <p class="py-2">Blurred: {{ face.blurredLikelihood === 'VERY_LIKELY' ? 'Yes' : 'No' }}</p>
+										            <p class="py-2">Headwear: {{ face.headwearLikelihood === 'VERY_LIKELY' ? 'Yes' : 'No' }}</p>
+											</div>
+										  </div>
+
+										</div>								 							
+									  </div>
+									</a>
 								  </div>
 
-								  <span class="absolute top-0 left-0 inline-flex mt-3 ml-3 px-3 py-2 rounded-lg z-10 text-violet-900 text-sm font-medium  select-none">
-									Label Analysis
-								  </span>
-								</div>
+							  	<div  v-if="analysisResults.texts && analysisResults.texts.length" class="relative mx-auto w-full">
+									<a href="#" class="relative inline-block duration-300 ease-in-out transition-transform transform hover:-translate-y-2 w-full">
+									  <div class="shadow p-4 rounded-lg bg-white">
+										<div class="flex justify-center relative rounded-lg overflow-hidden h-52">
+										  <div class="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full">
+											<img :src="imageUrl" class="absolute inset-0 bg-black opacity-40"/>
+										  </div>
 
-								<div class="mt-4">
-								  <h2 class="font-medium text-base md:text-lg text-gray-800 line-clamp-1" title="New York">
-									Score
-								  </h2>
-								  
-								  <div>
-									<div v-for="(label, index) in analysisResults.labels" :key="index">
-									      <div class="w-full">
-									        <p class="font-semibold text-xs mt-2">{{ label.description }}</p>
-									        <div class="shadow w-full bg-grey-light mt-2">
-									          <div
-									            :class="getProgressBarColor(label.score)"
-									            class="text-xs font-semibold py-0 leading-none text-center text-white"
-									            :style="`width: ${label.score * 100}%`"
-									          >
-									            {{ (label.score * 100).toFixed(0) }}%
-									          </div>
-									        </div>
-									      </div>
-									</div>
+										  <div class="absolute flex justify-center bottom-0 mb-3">
+											<div class="flex bg-white px-4 py-1 space-x-5 rounded-lg overflow-hidden shadow">
+											  <p class="flex items-center font-medium text-gray-800">
+												<svg class="w-5 h-5 fill-current mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M480,226.15V80a48,48,0,0,0-48-48H80A48,48,0,0,0,32,80V226.15C13.74,231,0,246.89,0,266.67V472a8,8,0,0,0,8,8H24a8,8,0,0,0,8-8V416H480v56a8,8,0,0,0,8,8h16a8,8,0,0,0,8-8V266.67C512,246.89,498.26,231,480,226.15ZM64,192a32,32,0,0,1,32-32H208a32,32,0,0,1,32,32v32H64Zm384,32H272V192a32,32,0,0,1,32-32H416a32,32,0,0,1,32,32ZM80,64H432a16,16,0,0,1,16,16v56.9a63.27,63.27,0,0,0-32-8.9H304a63.9,63.9,0,0,0-48,21.71A63.9,63.9,0,0,0,208,128H96a63.27,63.27,0,0,0-32,8.9V80A16,16,0,0,1,80,64ZM32,384V266.67A10.69,10.69,0,0,1,42.67,256H469.33A10.69,10.69,0,0,1,480,266.67V384Z"></path></svg>
+												image preview
+											  </p>
+
+											</div>
+										  </div>
+
+										  <span class="absolute top-0 left-0 inline-flex mt-3 ml-3 px-3 py-2 rounded-lg z-10 text-violet-900 text-sm font-medium  select-none">
+											Extracted Text
+										  </span>
+										</div>
+
+										<div class="mt-4">								  
+										  <div>
+											<div class="font-semibold text-sm">
+										            <p>{{ analysisResults.texts[0].description }}</p>
+											</div>
+										  </div>
+
+										</div>								 							
+									  </div>
+									</a>
 								  </div>
 
-								</div>								 							
-							  </div>
-							</a>
-						  </div>
+								  <div  v-if="analysisResults.logos && analysisResults.logos.length" class="relative mx-auto w-full">
+									<a href="#" class="relative inline-block duration-300 ease-in-out transition-transform transform hover:-translate-y-2 w-full">
+									  <div class="shadow p-4 rounded-lg bg-white">
+										<div class="flex justify-center relative rounded-lg overflow-hidden h-52">
+										  <div class="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full">
+											<img :src="imageUrl" class="absolute inset-0 bg-black opacity-40"/>
+										  </div>
 
-						  <div  v-if="analysisResults.faces && analysisResults.faces.length" class="relative mx-auto w-full">
-							<a href="#" class="relative inline-block duration-300 ease-in-out transition-transform transform hover:-translate-y-2 w-full">
-							  <div class="shadow p-4 rounded-lg bg-white">
-								<div class="flex justify-center relative rounded-lg overflow-hidden h-52">
-								  <div class="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full">
-									<img :src="imageUrl" class="absolute inset-0 bg-black opacity-40"/>
+										  <div class="absolute flex justify-center bottom-0 mb-3">
+											<div class="flex bg-white px-4 py-1 space-x-5 rounded-lg overflow-hidden shadow">
+
+											  <p class="flex items-center font-medium text-gray-800">
+												<svg class="w-5 h-5 fill-current mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M480,226.15V80a48,48,0,0,0-48-48H80A48,48,0,0,0,32,80V226.15C13.74,231,0,246.89,0,266.67V472a8,8,0,0,0,8,8H24a8,8,0,0,0,8-8V416H480v56a8,8,0,0,0,8,8h16a8,8,0,0,0,8-8V266.67C512,246.89,498.26,231,480,226.15ZM64,192a32,32,0,0,1,32-32H208a32,32,0,0,1,32,32v32H64Zm384,32H272V192a32,32,0,0,1,32-32H416a32,32,0,0,1,32,32ZM80,64H432a16,16,0,0,1,16,16v56.9a63.27,63.27,0,0,0-32-8.9H304a63.9,63.9,0,0,0-48,21.71A63.9,63.9,0,0,0,208,128H96a63.27,63.27,0,0,0-32,8.9V80A16,16,0,0,1,80,64ZM32,384V266.67A10.69,10.69,0,0,1,42.67,256H469.33A10.69,10.69,0,0,1,480,266.67V384Z"></path></svg>
+												image preview
+											  </p>
+											</div>
+										  </div>
+
+										  <span class="absolute top-0 left-0 inline-flex mt-3 ml-3 px-3 py-2 rounded-lg z-10 text-violet-900 text-sm font-medium  select-none">
+											Logo
+										  </span>
+										</div>
+
+										<div class="mt-4">								  
+										  <div>
+											<div class="font-semibold text-sm">
+										            <p>Logo Name: {{ analysisResults.logos[0].description }}</p>
+											</div>
+										  </div>
+
+										</div>								 							
+									  </div>
+									</a>
 								  </div>
 
-								  <div class="absolute flex justify-center bottom-0 mb-3">
-									<div class="flex bg-white px-4 py-1 space-x-5 rounded-lg overflow-hidden shadow">
-									  <p class="flex items-center font-medium text-gray-800">
-										<svg class="w-5 h-5 fill-current mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M480,226.15V80a48,48,0,0,0-48-48H80A48,48,0,0,0,32,80V226.15C13.74,231,0,246.89,0,266.67V472a8,8,0,0,0,8,8H24a8,8,0,0,0,8-8V416H480v56a8,8,0,0,0,8,8h16a8,8,0,0,0,8-8V266.67C512,246.89,498.26,231,480,226.15ZM64,192a32,32,0,0,1,32-32H208a32,32,0,0,1,32,32v32H64Zm384,32H272V192a32,32,0,0,1,32-32H416a32,32,0,0,1,32,32ZM80,64H432a16,16,0,0,1,16,16v56.9a63.27,63.27,0,0,0-32-8.9H304a63.9,63.9,0,0,0-48,21.71A63.9,63.9,0,0,0,208,128H96a63.27,63.27,0,0,0-32,8.9V80A16,16,0,0,1,80,64ZM32,384V266.67A10.69,10.69,0,0,1,42.67,256H469.33A10.69,10.69,0,0,1,480,266.67V384Z"></path></svg>
-										image preview
-									  </p>
+								  <div  v-if="analysisResults.landmarks && analysisResults.landmarks.length" class="relative mx-auto w-full">
+									<a href="#" class="relative inline-block duration-300 ease-in-out transition-transform transform hover:-translate-y-2 w-full">
+									  <div class="shadow p-4 rounded-lg bg-white">
+										<div class="flex justify-center relative rounded-lg overflow-hidden h-52">
+										  <div class="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full">
+											<img :src="analysisResults.imageUrl" class="absolute inset-0 bg-black opacity-40"/>
+										  </div>
 
-									</div>
+										  <div class="absolute flex justify-center bottom-0 mb-3">
+											<div class="flex bg-white px-4 py-1 space-x-5 rounded-lg overflow-hidden shadow">
+											  <p class="flex items-center font-medium text-gray-800">
+												<svg class="w-5 h-5 fill-current mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M480,226.15V80a48,48,0,0,0-48-48H80A48,48,0,0,0,32,80V226.15C13.74,231,0,246.89,0,266.67V472a8,8,0,0,0,8,8H24a8,8,0,0,0,8-8V416H480v56a8,8,0,0,0,8,8h16a8,8,0,0,0,8-8V266.67C512,246.89,498.26,231,480,226.15ZM64,192a32,32,0,0,1,32-32H208a32,32,0,0,1,32,32v32H64Zm384,32H272V192a32,32,0,0,1,32-32H416a32,32,0,0,1,32,32ZM80,64H432a16,16,0,0,1,16,16v56.9a63.27,63.27,0,0,0-32-8.9H304a63.9,63.9,0,0,0-48,21.71A63.9,63.9,0,0,0,208,128H96a63.27,63.27,0,0,0-32,8.9V80A16,16,0,0,1,80,64ZM32,384V266.67A10.69,10.69,0,0,1,42.67,256H469.33A10.69,10.69,0,0,1,480,266.67V384Z"></path></svg>
+												image preview
+											  </p>
+
+											 
+											</div>
+										  </div>
+
+										  <span class="absolute top-0 left-0 inline-flex mt-3 ml-3 px-3 py-2 rounded-lg z-10 text-violet-900 text-sm font-medium  select-none">
+											Landmark Detection
+										  </span>
+										</div>
+
+										<div class="mt-4">								  
+										  <div>
+											 <div v-for="(landmark, index) in analysisResults.landmarks" :key="index">
+											      <div class="w-full">
+											        <p class="font-semibold text-xs mt-2">{{ landmark.description }}</p>
+											        <div class="shadow w-full bg-grey-light mt-2">
+											          <div
+											            :class="getProgressBarColor(landmark.score)"
+											            class="text-xs font-semibold leading-none py-0 text-center text-white"
+											            :style="`width: ${landmark.score * 100}%`"
+											          >
+											            {{ (landmark.score * 100).toFixed(0) }}%
+											          </div>
+											        </div>
+											      </div>
+											    </div>
+										  </div>
+
+										</div>								 							
+									  </div>
+									</a>
 								  </div>
-
-								  <span class="absolute top-0 left-0 inline-flex mt-3 ml-3 px-3 py-2 rounded-lg z-10 text-violet-900 text-sm font-medium  select-none">
-									Face Mood
-								  </span>
-								</div>
-
-								<div class="mt-4">								  
-								  <div>
-									<div class="font-semibold text-sm" v-for="(face, index) in analysisResults.faces" :key="index">
-								            <p class="py-2">Joy: {{ face.joyLikelihood === 'VERY_LIKELY' ? 'Yes' : 'No' }}</p>
-								            <p class="py-2">Anger: {{ face.angerLikelihood === 'VERY_LIKELY' ? 'Yes' : 'No' }}</p>
-								            <p class="py-2">Sorrow: {{ face.sorrowLikelihood === 'VERY_LIKELY' ? 'Yes' : 'No' }}</p>
-								            <p class="py-2">Surprise: {{ face.surpriseLikelihood === 'VERY_LIKELY' ? 'Yes' : 'No' }}</p>
-								             <p class="py-2">Under Exposed: {{ face.underExposedLikelihood === 'VERY_LIKELY' ? 'Yes' : 'No' }}</p>
-								            <p class="py-2">Blurred: {{ face.blurredLikelihood === 'VERY_LIKELY' ? 'Yes' : 'No' }}</p>
-								            <p class="py-2">Headwear: {{ face.headwearLikelihood === 'VERY_LIKELY' ? 'Yes' : 'No' }}</p>
-									</div>
-								  </div>
-
-								</div>								 							
-							  </div>
-							</a>
-						  </div>
-
-						   <div  v-if="analysisResults.texts && analysisResults.texts.length" class="relative mx-auto w-full">
-							<a href="#" class="relative inline-block duration-300 ease-in-out transition-transform transform hover:-translate-y-2 w-full">
-							  <div class="shadow p-4 rounded-lg bg-white">
-								<div class="flex justify-center relative rounded-lg overflow-hidden h-52">
-								  <div class="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full">
-									<img :src="imageUrl" class="absolute inset-0 bg-black opacity-40"/>
-								  </div>
-
-								  <div class="absolute flex justify-center bottom-0 mb-3">
-									<div class="flex bg-white px-4 py-1 space-x-5 rounded-lg overflow-hidden shadow">
-									  <p class="flex items-center font-medium text-gray-800">
-										<svg class="w-5 h-5 fill-current mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M480,226.15V80a48,48,0,0,0-48-48H80A48,48,0,0,0,32,80V226.15C13.74,231,0,246.89,0,266.67V472a8,8,0,0,0,8,8H24a8,8,0,0,0,8-8V416H480v56a8,8,0,0,0,8,8h16a8,8,0,0,0,8-8V266.67C512,246.89,498.26,231,480,226.15ZM64,192a32,32,0,0,1,32-32H208a32,32,0,0,1,32,32v32H64Zm384,32H272V192a32,32,0,0,1,32-32H416a32,32,0,0,1,32,32ZM80,64H432a16,16,0,0,1,16,16v56.9a63.27,63.27,0,0,0-32-8.9H304a63.9,63.9,0,0,0-48,21.71A63.9,63.9,0,0,0,208,128H96a63.27,63.27,0,0,0-32,8.9V80A16,16,0,0,1,80,64ZM32,384V266.67A10.69,10.69,0,0,1,42.67,256H469.33A10.69,10.69,0,0,1,480,266.67V384Z"></path></svg>
-										image preview
-									  </p>
-
-									</div>
-								  </div>
-
-								  <span class="absolute top-0 left-0 inline-flex mt-3 ml-3 px-3 py-2 rounded-lg z-10 text-violet-900 text-sm font-medium  select-none">
-									Extracted Text
-								  </span>
-								</div>
-
-								<div class="mt-4">								  
-								  <div>
-									<div class="font-semibold text-sm">
-								            <p>{{ analysisResults.texts[0].description }}</p>
-									</div>
-								  </div>
-
-								</div>								 							
-							  </div>
-							</a>
-						  </div>
-
-						  <div  v-if="analysisResults.logos && analysisResults.logos.length" class="relative mx-auto w-full">
-							<a href="#" class="relative inline-block duration-300 ease-in-out transition-transform transform hover:-translate-y-2 w-full">
-							  <div class="shadow p-4 rounded-lg bg-white">
-								<div class="flex justify-center relative rounded-lg overflow-hidden h-52">
-								  <div class="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full">
-									<img :src="imageUrl" class="absolute inset-0 bg-black opacity-40"/>
-								  </div>
-
-								  <div class="absolute flex justify-center bottom-0 mb-3">
-									<div class="flex bg-white px-4 py-1 space-x-5 rounded-lg overflow-hidden shadow">
-
-									  <p class="flex items-center font-medium text-gray-800">
-										<svg class="w-5 h-5 fill-current mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M480,226.15V80a48,48,0,0,0-48-48H80A48,48,0,0,0,32,80V226.15C13.74,231,0,246.89,0,266.67V472a8,8,0,0,0,8,8H24a8,8,0,0,0,8-8V416H480v56a8,8,0,0,0,8,8h16a8,8,0,0,0,8-8V266.67C512,246.89,498.26,231,480,226.15ZM64,192a32,32,0,0,1,32-32H208a32,32,0,0,1,32,32v32H64Zm384,32H272V192a32,32,0,0,1,32-32H416a32,32,0,0,1,32,32ZM80,64H432a16,16,0,0,1,16,16v56.9a63.27,63.27,0,0,0-32-8.9H304a63.9,63.9,0,0,0-48,21.71A63.9,63.9,0,0,0,208,128H96a63.27,63.27,0,0,0-32,8.9V80A16,16,0,0,1,80,64ZM32,384V266.67A10.69,10.69,0,0,1,42.67,256H469.33A10.69,10.69,0,0,1,480,266.67V384Z"></path></svg>
-										image preview
-									  </p>
-									</div>
-								  </div>
-
-								  <span class="absolute top-0 left-0 inline-flex mt-3 ml-3 px-3 py-2 rounded-lg z-10 text-violet-900 text-sm font-medium  select-none">
-									Logo
-								  </span>
-								</div>
-
-								<div class="mt-4">								  
-								  <div>
-									<div class="font-semibold text-sm">
-								            <p>Logo Name: {{ analysisResults.logos[0].description }}</p>
-									</div>
-								  </div>
-
-								</div>								 							
-							  </div>
-							</a>
-						  </div>
-
-						  <div  v-if="analysisResults.landmarks && analysisResults.landmarks.length" class="relative mx-auto w-full">
-							<a href="#" class="relative inline-block duration-300 ease-in-out transition-transform transform hover:-translate-y-2 w-full">
-							  <div class="shadow p-4 rounded-lg bg-white">
-								<div class="flex justify-center relative rounded-lg overflow-hidden h-52">
-								  <div class="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full">
-									<img :src="analysisResults.imageUrl" class="absolute inset-0 bg-black opacity-40"/>
-								  </div>
-
-								  <div class="absolute flex justify-center bottom-0 mb-3">
-									<div class="flex bg-white px-4 py-1 space-x-5 rounded-lg overflow-hidden shadow">
-									  <p class="flex items-center font-medium text-gray-800">
-										<svg class="w-5 h-5 fill-current mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M480,226.15V80a48,48,0,0,0-48-48H80A48,48,0,0,0,32,80V226.15C13.74,231,0,246.89,0,266.67V472a8,8,0,0,0,8,8H24a8,8,0,0,0,8-8V416H480v56a8,8,0,0,0,8,8h16a8,8,0,0,0,8-8V266.67C512,246.89,498.26,231,480,226.15ZM64,192a32,32,0,0,1,32-32H208a32,32,0,0,1,32,32v32H64Zm384,32H272V192a32,32,0,0,1,32-32H416a32,32,0,0,1,32,32ZM80,64H432a16,16,0,0,1,16,16v56.9a63.27,63.27,0,0,0-32-8.9H304a63.9,63.9,0,0,0-48,21.71A63.9,63.9,0,0,0,208,128H96a63.27,63.27,0,0,0-32,8.9V80A16,16,0,0,1,80,64ZM32,384V266.67A10.69,10.69,0,0,1,42.67,256H469.33A10.69,10.69,0,0,1,480,266.67V384Z"></path></svg>
-										image preview
-									  </p>
-
-									 
-									</div>
-								  </div>
-
-								  <span class="absolute top-0 left-0 inline-flex mt-3 ml-3 px-3 py-2 rounded-lg z-10 text-violet-900 text-sm font-medium  select-none">
-									Landmark Detection
-								  </span>
-								</div>
-
-								<div class="mt-4">								  
-								  <div>
-									 <div v-for="(landmark, index) in analysisResults.landmarks" :key="index">
-									      <div class="w-full">
-									        <p class="font-semibold text-xs mt-2">{{ landmark.description }}</p>
-									        <div class="shadow w-full bg-grey-light mt-2">
-									          <div
-									            :class="getProgressBarColor(landmark.score)"
-									            class="text-xs font-semibold leading-none py-0 text-center text-white"
-									            :style="`width: ${landmark.score * 100}%`"
-									          >
-									            {{ (landmark.score * 100).toFixed(0) }}%
-									          </div>
-									        </div>
-									      </div>
-									    </div>
-								  </div>
-
-								</div>								 							
-							  </div>
-							</a>
-						  </div>
-
-						</div>
-
-
-				    </div>
-				  </div>            	              
+	 							</div>
+					    </div>
+					    <div v-else class="bg-white flex justify-center items-center shadow-sm    animate-fade-in-down h-20">
+	                <p class="font-semibold">Analysis not performed on this image</p>                   
               </div>
-          </div> 
-        
+				   </div>            	              
+             
+        </div> 
       </main>
 </template>
 
@@ -410,16 +404,19 @@ export default {
     },        
 
     async fetchAnalysisResults() {
+    	this.loading = true;
       const imageId = this.$route.params.imageId;
       try {
-        // Make an API request to fetch the analysis results
+        // Make an API request to fetch the analysis results for an image
         const response = await axios.get(`http://localhost:3000/api/image/analysis/${imageId}`);
 
         // Assign the results to this.analysisResults
         this.analysisResults = response.data.analysisResults;
         this.imageUrl = response.data.imageUrl;
+        this.loading = false;
       } catch (error) {
         console.error(error);
+        this.loading = false;
       }
     },
 

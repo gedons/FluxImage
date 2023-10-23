@@ -4,9 +4,12 @@ const multer = require('multer');
 const imageController = require('../controllers/imageController');
 const { ImageAnnotatorClient } = require('@google-cloud/vision');
 const Image = require('../models/Image');
+const fs = require('fs');
+const config = require('../config/config');
 
 
-const keyFilename = './project-rollings-235933cf7cf2.json';
+
+const keyFilename = config.googleAppCredentials;
 
 // Create a new ImageAnnotatorClient with the specified credentials
 const visionClient = new ImageAnnotatorClient({ keyFilename });
@@ -15,7 +18,7 @@ const visionClient = new ImageAnnotatorClient({ keyFilename });
 const { Storage } = require('@google-cloud/storage');
 const storage = new Storage({
   projectId: 'project-rollings',
-  keyFilename: './project-rollings-235933cf7cf2.json',
+  keyFilename: keyFilename,
 });
 
 //My bucket name

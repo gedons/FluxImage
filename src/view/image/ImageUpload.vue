@@ -99,7 +99,7 @@
           <div class="flex justify-between items-center">
             <h1 class="text-3xl font-bold tracking-tight text-gray-900">Upload Image</h1>
             <div>
-              <router-link :to="{name: 'Index'}" class="flex py-2 px-4 border border-transparent text-sm rounded-md text-white bg-violet-800 hover:bg-violet-700 focus:ring-2 font-semibold focus:ring-offset-2 focus:ring-indigo-500">
+              <router-link :to="{name: 'Images'}" class="flex py-2 px-4 border border-transparent text-sm rounded-md text-white bg-violet-800 hover:bg-violet-700 focus:ring-2 font-semibold focus:ring-offset-2 focus:ring-indigo-500">
                  Back
               </router-link>
             </div>          
@@ -123,10 +123,11 @@
                                   <input type="hidden" v-model="user_id">
                                   <input type="file" class="text-sm cursor-pointer w-36 hidden" name="image" ref="fileInput" @change="previewImage" @click="checkFileSize" accept="image/*">
 
-                                  <div v-if="imagePreview" class="flex justify-center items-center">
+                                  <div v-if="imagePreview" :disabled="loading" class="flex justify-center items-center">
                                     <button  @click="uploadImage" class="text bg-violet-800 text-white border border-violet-300 rounded font-semibold cursor-pointer mt-3 p-1 px-7 hover:bg-violet-700 flex justify-center items-center"
                                         :class="{
-                                           'cursor-not-allowed': loading,                                      
+                                           'cursor-not-allowed': loading,  
+
                                          }">  
                                         <svg v-if="loading" class="animate-spin mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
                                             fill="none" viewBox="0 0 24 24">
@@ -135,7 +136,8 @@
                                               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                                             </path>
                                        </svg>
-                                      Save
+                                      <span>Save</span>
+                                      <span>Save</span>
                                     </button>
                                   </div>
                                   <div v-else class="text bg-violet-800 text-white border border-violet-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-violet-700">
