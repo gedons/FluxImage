@@ -25,7 +25,7 @@ const store = createStore({
     async register({ commit }, { username, email, password }) {
       try {
         // Make an API request to your back end to register the user
-        const response = await fetch('http://localhost:3000/api/auth/register', {
+        const response = await fetch('https://fluximage-api.onrender.com/api/auth/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ const store = createStore({
     async login({ commit }, { email, password }) {
       try {
         // Make an API request to your back end to authenticate the user
-        const response = await fetch('http://localhost:3000/api/auth/login', {
+        const response = await fetch('https://fluximage-api.onrender.com/api/auth/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ const store = createStore({
     async updateUserProfile({ commit }, { username, id }) {
       try {
         // Make an API request to update the user's profile
-        const response = await fetch('http://localhost:3000/api/user/profile', {
+        const response = await fetch('https://fluximage-api.onrender.com/api/user/profile', {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ const store = createStore({
     async fetchUserData({ commit }) {
       try {
         // Make an API request to fetch the user's data
-        const response = await fetch('http://localhost:3000/api/user/profile', {
+        const response = await fetch('https://fluximage-api.onrender.com/api/user/profile', {
           method: 'GET',
           headers: {
              'Content-Type': 'application/json',
@@ -143,7 +143,7 @@ const store = createStore({
    async updateUserPassword({ commit }, { currentPassword, newPassword }) {
       try {
         // Make an API request to update the user's password
-        const response = await fetch('http://localhost:3000/api/user/updatePassword', {
+        const response = await fetch('https://fluximage-api.onrender.com/api/user/updatePassword', {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

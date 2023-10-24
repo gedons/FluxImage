@@ -236,7 +236,7 @@ export default {
         formData.append('user_id', this.user_id);
 
         // Make an API request to upload the image
-        const response = await axios.post('http://localhost:3000/api/image/upload', formData, {
+        const response = await axios.post('https://fluximage-api.onrender.com/api/image/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data', 
           },

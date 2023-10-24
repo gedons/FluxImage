@@ -262,7 +262,7 @@ export default {
     fetchLatestImage() {     
     this.loading = true; 
       const user_id = this.currentUser.user._id; 
-      axios.get(`http://localhost:3000/api/image/dashboard/latest/${user_id}`)
+      axios.get(`https://fluximage-api.onrender.com/api/image/dashboard/latest/${user_id}`)
         .then((response) => {
           this.latestImage = response.data;
           this.loading = false; 
@@ -276,7 +276,7 @@ export default {
     fetchImageCount() {
       this.loading = true;
       const user_id = this.currentUser.user._id; 
-      axios.get(`http://localhost:3000/api/image/image-count/${user_id}`)
+      axios.get(`https://fluximage-api.onrender.com/api/image/image-count/${user_id}`)
         .then((response) => {
           this.imageCount = response.data.count;
           this.loading = false; 

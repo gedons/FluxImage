@@ -408,7 +408,7 @@ export default {
       const imageId = this.$route.params.imageId;
       try {
         // Make an API request to fetch the analysis results for an image
-        const response = await axios.get(`http://localhost:3000/api/image/analysis/${imageId}`);
+        const response = await axios.get(`https://fluximage-api.onrender.com/api/image/analysis/${imageId}`);
 
         // Assign the results to this.analysisResults
         this.analysisResults = response.data.analysisResults;

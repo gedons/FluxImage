@@ -274,7 +274,7 @@ export default {
 
     deleteImage(image_id) {
      // if (confirm('Are you sure you want to delete this image?')) {
-        axios.delete(`http://localhost:3000/api/image/delete/${image_id}`)
+        axios.delete(`https://fluximage-api.onrender.com/api/image/delete/${image_id}`)
           .then(() => {
             this.images = this.images.filter(image => image._id !== image_id);
             this.$toast.success('Image deleted successfully');
@@ -302,7 +302,7 @@ export default {
       this.loading = true;
 
       const user_id = this.currentUser.user._id; 
-      axios.get(`http://localhost:3000/api/image/view/${user_id}`, {
+      axios.get(`https://fluximage-api.onrender.com/api/image/view/${user_id}`, {
         params: {
           page: this.page,
           pageSize: this.pageSize,
@@ -320,7 +320,7 @@ export default {
 
     fetchImageCount() {
       const user_id = this.currentUser.user._id; 
-      axios.get(`http://localhost:3000/api/image/image-count/${user_id}`)
+      axios.get(`https://fluximage-api.onrender.com/api/image/image-count/${user_id}`)
         .then((response) => {
           this.imageCount = response.data.count;
         })
