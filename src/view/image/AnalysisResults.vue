@@ -283,7 +283,7 @@
 									  <div class="shadow p-4 rounded-lg bg-white">
 										<div class="flex justify-center relative rounded-lg overflow-hidden h-52">
 										  <div class="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full">
-											<img :src="analysisResults.imageUrl" class="absolute inset-0 bg-black opacity-40"/>
+											<img :src="imageUrl" class="absolute inset-0 bg-black opacity-40"/>
 										  </div>
 
 										  <div class="absolute flex justify-center bottom-0 mb-3">
