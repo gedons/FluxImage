@@ -39,8 +39,8 @@
                   <circle class="text-emerald-100" cx="32" cy="32" r="32" />
                   <path class="text-emerald-500" d="m28.5 41-8-8 3-3 5 5 12-12 3 3z" />
                 </svg>
-                <h1 class="text-3xl text-slate-800 font-bold mb-8">Nice to have you, Flux Image. 🙌</h1>
-                <a href="/login" class="px-8 py-3 font-semibold rounded bg-violet-500 text-gray-200 ml-auto" to="/dashboard">Login To Dashboard -&gt;</a>
+                <h1 class="text-3xl text-slate-800 font-bold mb-8">Nice to have you at Flux Image. 🙌</h1>
+                <router-link :to="{name: 'Login'}" class="px-8 py-3 font-semibold rounded bg-violet-500 text-gray-200 ml-auto" to="/dashboard">Login To Dashboard -&gt;</router-link>
               </div>
 
             </div>
