@@ -22,7 +22,7 @@ const routes = [
 		},
 		{
 			path: '*',
-			component: Index
+			redirect: "/"
 		},
 		{
 			path: '/login',
