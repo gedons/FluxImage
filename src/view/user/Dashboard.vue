@@ -142,7 +142,7 @@
                   <div
                     class="text-8xl pb-4 font-semibold text-violet-600 flex-1 flex items-center justify-center"
                   >
-                  6
+                  0
                   </div>
                 </div>
                 <!-- /token available  -->
@@ -153,7 +153,7 @@
                     <div
                       class="text-8xl pb-4 font-semibold text-violet-600 flex-1 flex items-center justify-center"
                     >
-                   3
+                   0
                     </div>
                   </div>
                   <!-- //  -->                  
