@@ -21,10 +21,6 @@ const routes = [
 			component: Index
 		},
 		{
-			path: '*',
-			redirect: "/"
-		},
-		{
 			path: '/login',
 			name: 'Login',
 			component: Login
