@@ -71,10 +71,10 @@
         Join us on this exciting journey of visual discovery and analysis. Try our app today and unlock the hidden potential within your images!
       </p>
 
-      <router-link :to="{name: 'Register'}" 
+      <router-link :to="{name: 'Login'}" 
         class="mt-8 inline-block rounded-full border border-violet-600 px-12 py-3 text-sm font-medium text-violet-600 hover:bg-violet-600 hover:text-white focus:outline-none focus:ring active:bg-violet-500"
       >
-        Get Started
+        Sign In
       </router-link>
     </div>
 
