@@ -4,7 +4,7 @@
         <div class="flex h-16 items-center justify-between">
           <div class="flex items-center">
             <div class="flex-shrink-0">
-              <img class="h-8 w-8" src="/logo.svg"
+              <img class="h-8 w-8" loading="lazy" src="/logo.svg"
                 alt="Your Company" />
             </div>
             <div class="hidden md:block">
@@ -35,7 +35,7 @@
                   <MenuButton
                     class="flex max-w-xs items-center rounded-full bg-violet-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-violet-600">
                     <span class="sr-only">Open user menu</span>
-                    <img class="h-8 w-8 rounded-full" :src="details.imageUrl" alt="" />
+                    <img class="h-8 w-8 rounded-full" loading="lazy" :src="details.imageUrl" alt="" />
                   </MenuButton>
                 </div>
                 <transition enter-active-class="transition ease-out duration-100"
@@ -74,7 +74,7 @@
         <div class="border-t border-violet-700 pb-3 pt-4">
           <div class="flex items-center px-5">
             <div class="flex-shrink-0">
-              <img class="h-10 w-10 rounded-full" :src="details.imageUrl" alt="" />
+              <img class="h-10 w-10 rounded-full" loading="lazy" :src="details.imageUrl" alt="" />
             </div>                  
           </div>
           <div class="mt-3 space-y-1 px-2">
@@ -123,7 +123,7 @@
 									  <div class="shadow p-4 rounded-lg bg-white">
 										<div class="flex justify-center relative rounded-lg overflow-hidden h-52">
 										  <div class="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full">
-											<img :src="imageUrl" class="absolute inset-0 bg-black opacity-40"/>
+											<img :src="imageUrl" loading="lazy" class="absolute inset-0 bg-black opacity-40"/>
 										  </div>
 
 										  <div class="absolute flex justify-center bottom-0 mb-3">
@@ -172,7 +172,7 @@
 									  <div class="shadow p-4 rounded-lg bg-white">
 										<div class="flex justify-center relative rounded-lg overflow-hidden h-52">
 										  <div class="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full">
-											<img :src="imageUrl" class="absolute inset-0 bg-black opacity-40"/>
+											<img :src="imageUrl" loading="lazy" class="absolute inset-0 bg-black opacity-40"/>
 										  </div>
 
 										  <div class="absolute flex justify-center bottom-0 mb-3">
@@ -213,7 +213,7 @@
 									  <div class="shadow p-4 rounded-lg bg-white">
 										<div class="flex justify-center relative rounded-lg overflow-hidden h-52">
 										  <div class="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full">
-											<img :src="imageUrl" class="absolute inset-0 bg-black opacity-40"/>
+											<img :src="imageUrl" loading="lazy" class="absolute inset-0 bg-black opacity-40"/>
 										  </div>
 
 										  <div class="absolute flex justify-center bottom-0 mb-3">
@@ -248,7 +248,7 @@
 									  <div class="shadow p-4 rounded-lg bg-white">
 										<div class="flex justify-center relative rounded-lg overflow-hidden h-52">
 										  <div class="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full">
-											<img :src="imageUrl" class="absolute inset-0 bg-black opacity-40"/>
+											<img :src="imageUrl" loading="lazy" class="absolute inset-0 bg-black opacity-40"/>
 										  </div>
 
 										  <div class="absolute flex justify-center bottom-0 mb-3">
@@ -283,7 +283,7 @@
 									  <div class="shadow p-4 rounded-lg bg-white">
 										<div class="flex justify-center relative rounded-lg overflow-hidden h-52">
 										  <div class="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full">
-											<img :src="imageUrl" class="absolute inset-0 bg-black opacity-40"/>
+											<img :src="imageUrl" loading="lazy" class="absolute inset-0 bg-black opacity-40"/>
 										  </div>
 
 										  <div class="absolute flex justify-center bottom-0 mb-3">

@@ -4,7 +4,7 @@
         <div class="flex h-16 items-center justify-between">
           <div class="flex items-center">
             <div class="flex-shrink-0">
-              <img class="h-8 w-8" src="/logo.svg"
+              <img class="h-8 w-8" loading="lazy" src="/logo.svg"
                 alt="Your Company" />
             </div>
             <div class="hidden md:block">
@@ -35,7 +35,7 @@
                   <MenuButton
                     class="flex max-w-xs items-center rounded-full bg-violet-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-violet-600">
                     <span class="sr-only">Open user menu</span>
-                    <img class="h-8 w-8 rounded-full" :src="details.imageUrl" alt="" />
+                    <img class="h-8 w-8 rounded-full" loading="lazy" :src="details.imageUrl" alt="" />
                   </MenuButton>
                 </div>
                 <transition enter-active-class="transition ease-out duration-100"
@@ -74,7 +74,7 @@
         <div class="border-t border-violet-700 pb-3 pt-4">
           <div class="flex items-center px-5">
             <div class="flex-shrink-0">
-              <img class="h-10 w-10 rounded-full" :src="details.imageUrl" alt="" />
+              <img class="h-10 w-10 rounded-full" loading="lazy" :src="details.imageUrl" alt="" />
             </div>                  
           </div>
           <div class="mt-3 space-y-1 px-2">
@@ -114,7 +114,7 @@
                   style="width: 450px">
                         <div v-if="imagePreview" class="flex justify-center items-center">
                             
-                                <img :src="imagePreview" alt="Image Preview" style="max-width: 100%; height: 170px;">                                                                   
+                                <img :src="imagePreview" loading="lazy" alt="Image Preview" style="max-width: 100%; height: 170px;">                                                                   
                         </div>
                           <svg v-else class="text-violet-500 w-24 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
                           <div class="input_field flex flex-col w-max mx-auto text-center">
@@ -136,7 +136,10 @@
                                               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                                             </path>
                                        </svg>
-                                      <span v-if="loading">Saving...</span>
+                                      <span v-if="loading" :disabled="loading" :class="{
+                                           'cursor-not-allowed': loading,  
+
+                                         }"> Saving...</span>
                                       <span v-else>Save</span>
                                     </button>
                                   </div>

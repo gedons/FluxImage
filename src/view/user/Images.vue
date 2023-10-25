@@ -4,7 +4,7 @@
         <div class="flex h-16 items-center justify-between">
           <div class="flex items-center">
             <div class="flex-shrink-0">
-              <img class="h-8 w-8" src="/logo.svg"
+              <img class="h-8 w-8" loading="lazy" src="/logo.svg"
                 alt="Your Company" />
             </div>
             <div class="hidden md:block">
@@ -35,7 +35,7 @@
                   <MenuButton
                     class="flex max-w-xs items-center rounded-full bg-violet-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-violet-600">
                     <span class="sr-only">Open user menu</span>
-                    <img class="h-8 w-8 rounded-full" :src="details.imageUrl" alt="" />
+                    <img class="h-8 w-8 rounded-full" loading="lazy" :src="details.imageUrl" alt="" />
                   </MenuButton>
                 </div>
                 <transition enter-active-class="transition ease-out duration-100"
@@ -74,7 +74,7 @@
         <div class="border-t border-violet-700 pb-3 pt-4">
           <div class="flex items-center px-5">
             <div class="flex-shrink-0">
-              <img class="h-10 w-10 rounded-full" :src="details.imageUrl" alt="" />
+              <img class="h-10 w-10 rounded-full" loading="lazy" :src="details.imageUrl" alt="" />
             </div>                  
           </div>
           <div class="mt-3 space-y-1 px-2">
@@ -122,7 +122,7 @@
 
                 <div v-else class="grid grid-cols-1 gap-5 rounded sm:grid-cols-2 md:grid-cols-3">
                   <div v-for="image in images" :key="image._id" class="flex flex-col py-4 px-6 shadow-md bg-white hover:bg-gray-50 h[470px] opacity-0 animate-fade-in-down">
-                      <img :src="image.imageUrl" alt="img" class="w-full h-48 object-cover"/>
+                      <img :src="image.imageUrl" alt="Uploaded Image" loading="lazy" class="w-full h-48 object-cover"/>
                       
                       <label class="font-semibold text-sm mt-2">Analysis Features</label>                     
                       <input type="hidden" v-model="user_id">

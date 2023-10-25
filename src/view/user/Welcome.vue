@@ -52,7 +52,7 @@
 
       <!-- Image -->
      <div class="hidden md:block absolute top-0 bottom-0 right-0 md:w-1/2" aria-hidden="true">
-        <img class="object-cover object-center w-full h-full" src="https://source.unsplash.com/random" width="760" height="1024" alt="Onboarding" />
+        <img class="object-cover object-center w-full h-full" loading="lazy" src="https://source.unsplash.com/random" width="760" height="1024" alt="Onboarding" />
       </div>
 
     </div>
